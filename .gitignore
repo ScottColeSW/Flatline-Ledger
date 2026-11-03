@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# local lab state, never committed
+keys.ini
+results/*.jsonl
+results/*.log
+*.local.json
+
+# editor/OS noise
+.DS_Store
+.vscode/

@@ -1,0 +1,25 @@
+{
+  "_comment": "Example shape only. Not a committed blueprint, and not wired to ledger.py yet. Copy to pt01-001.json and fill in real values once the target is actually running, then this file stops being an example.",
+  "vulnerability_id": "pt01-001",
+  "mitre_technique": "T1190",
+  "target": {
+    "_comment": "Must resolve to localhost, 127.0.0.1, or a service name in this repo's own docker-compose file. ledger.py refuses any other host before a replay runs.",
+    "host": "http://localhost:3000"
+  },
+  "method": "GET",
+  "endpoint": "/rest/basket/{basket_id}",
+  "auth": {
+    "_comment": "Two local accounts created inside the container for this test only, never real credentials.",
+    "as_user": "victim@example.test"
+  },
+  "attack_variant": {
+    "_comment": "Request the attacker account's token but a basket_id belonging to the victim account.",
+    "basket_id_belongs_to": "attacker@example.test"
+  },
+  "expected_exploit_indicator": "victim@example.test",
+  "expected_blocked_signal": [401, 403],
+  "legitimate_check": {
+    "_comment": "Same endpoint, same account, basket_id belongs to the requester. Must keep succeeding in every condition.",
+    "basket_id_belongs_to": "requester"
+  }
+}

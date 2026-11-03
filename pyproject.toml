@@ -1,0 +1,12 @@
+[project]
+name = "flatline-ledger"
+version = "0.0.1"
+description = "A predict-then-verify pen testing and purple team range, scored like Agent Defense Theater: attacks stopped next to legitimate work kept, against lab targets only."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dast = ["httpx>=0.27"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
