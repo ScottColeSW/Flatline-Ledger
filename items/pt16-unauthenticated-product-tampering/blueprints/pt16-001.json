@@ -1,0 +1,17 @@
+{
+  "vulnerability_id": "pt16-001",
+  "mitre_technique": "T1565.001",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-306",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "PUT",
+  "endpoint": "/api/Products/{id}",
+  "description": "server.js's own route table shows the authorization middleware for this exact route commented out: '// app.put(\\'/api/Products/:id\\', security.isAuthorized()) // vuln-code-snippet vuln-line changeProductChallenge'. No authentication of any kind is required to overwrite any product's name, description, or price, public, store-wide content any visitor sees, not a per-account setting like pt13's username field.",
+  "test_product_id": 1,
+  "expected_exploit_indicator": "A PUT request with no Authorization header at all succeeds, HTTP 200, and the product's description is actually changed when read back afterward",
+  "expected_blocked_signal": [401, 403],
+  "legitimate_check": "A real admin-authenticated PUT must keep working in every condition.",
+  "test_hygiene_note": "This item mutates live product data on the shared container; scenario.py restores the original description immediately after confirming the tamper, every run."
+}

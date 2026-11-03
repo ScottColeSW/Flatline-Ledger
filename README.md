@@ -62,6 +62,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt13](items/pt13-csrf-profile-update/) CSRF on Profile Username Update (Juice Shop, CWE-352, T1185, A01:2021) | `POST /profile` changes the username authenticated purely by cookie; `Origin`/`Referer` are read only for scoreboard tracking, never enforced. A forged origin with no CSRF token still succeeds | No control: `VULNERABLE` (forged origin, HTTP 302). An Origin-checking proxy: `REMEDIATED` (HTTP 403), same-origin updates unaffected |
 | [pt14](items/pt14-basket-parameter-pollution/) HTTP Parameter Pollution on Basket Items (Juice Shop, CWE-235, T1565.001, A01:2021) | A check that's correct in isolation: the ownership check reads the first occurrence of a duplicated `BasketId` key, the actual insert reads the last. One repeated key writes an item into a victim's basket | No control: `VULNERABLE` (item landed in the victim's basket). A duplicate-key-rejecting proxy: `REMEDIATED` (HTTP 400), normal single-key requests unaffected |
 | [pt15](items/pt15-free-deluxe-membership/) Free Deluxe Membership (Juice Shop, CWE-840, A04:2021) | A business-logic flaw, not an injection or missing check: `paymentMode` other than exactly `"wallet"` or `"card"`, including absent entirely, skips both payment branches and upgrades the account anyway | No control: `VULNERABLE` (upgraded for free, no MITRE technique assigned, same honest gap as pt05). A payment-mode allowlist: `REMEDIATED` (HTTP 400), a real paid upgrade built and verified end to end still works |
+| [pt16](items/pt16-unauthenticated-product-tampering/) Unauthenticated Product Tampering (Juice Shop, CWE-306, T1565.001, A01:2021) | Found in a comment, not a bug hunt: `server.js` shows the authorization line for `PUT /api/Products/:id` commented out. No login of any kind needed to overwrite any product's public, store-wide content | No control: `VULNERABLE` (overwritten with zero auth, HTTP 200). An auth-enforcing proxy: `REMEDIATED` (HTTP 401), real admin edits unaffected. Scenario restores the real product afterward every run |
 
 ## Items
 
@@ -82,6 +83,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt13-csrf-profile-update](items/pt13-csrf-profile-update/) | Cross-site request forgery | Run live, 2026-11-03 |
 | [pt14-basket-parameter-pollution](items/pt14-basket-parameter-pollution/) | HTTP parameter pollution / broken access control | Run live, 2026-11-03 |
 | [pt15-free-deluxe-membership](items/pt15-free-deluxe-membership/) | Insecure design / business logic (payment bypass) | Run live, 2026-11-03 |
+| [pt16-unauthenticated-product-tampering](items/pt16-unauthenticated-product-tampering/) | Missing authentication (public content tampering) | Run live, 2026-11-03 |
 
 ## Keeping this safe
 

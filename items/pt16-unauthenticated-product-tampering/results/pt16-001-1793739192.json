@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt16-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3018",
+  "status": "REMEDIATED",
+  "exploit_http_status": 401,
+  "summary": "Blocked with HTTP 401.",
+  "original_description_restored": true,
+  "legitimate_admin_tamper_ok": true
+}

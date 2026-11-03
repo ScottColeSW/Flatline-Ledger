@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt16-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "An unauthenticated PUT, no token at all, overwrote a real product's description, confirmed by reading it back.",
+  "original_description_restored": true,
+  "legitimate_admin_tamper_ok": true
+}
