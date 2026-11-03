@@ -1,0 +1,13 @@
+{
+  "vulnerability_id": "pt01-001",
+  "mitre_technique": "T1190",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/rest/basket/{basket_id}",
+  "description": "Two fresh accounts are registered and logged in. The attacker's bearer token is used to request the victim's basket id. A server-side ownership check must reject this; Juice Shop's own backend does not.",
+  "expected_exploit_indicator": "HTTP 200 with response data.UserId equal to the victim's user id",
+  "expected_blocked_signal": [401, 403],
+  "legitimate_check": "Each account must still be able to read its own basket by id in every condition."
+}

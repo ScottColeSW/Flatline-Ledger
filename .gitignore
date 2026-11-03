@@ -5,9 +5,11 @@ venv/
 
 # local lab state, never committed
 keys.ini
-results/*.jsonl
-results/*.log
 *.local.json
+
+# scripted/demo runs illustrate a mechanism and are regenerable; they are
+# never evidence, so they don't belong in the committed record
+items/*/results/scripted/
 
 # editor/OS noise
 .DS_Store

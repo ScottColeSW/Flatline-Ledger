@@ -33,7 +33,7 @@ python ledger.py verify                                # check the hash chain
 python -m pytest -q
 ```
 
-Lab targets are brought up with Docker and are not part of this repo; each item's `README.md` names the exact image and pinned tag it was run against.
+Lab targets are brought up with Docker and are not part of this repo; each item's `README.md` names the exact image and pinned tag it was run against (`pt01` uses `bkimminich/juice-shop:v17.3.0`).
 
 ## Where this fits next to the other repos
 
@@ -43,11 +43,17 @@ Lab targets are brought up with Docker and are not part of this repo; each item'
 
 Details on specific overlaps (same infrastructure attacked from two angles, shared MITRE mappings) are in [docs/OVERLAPS.md](docs/OVERLAPS.md).
 
+## Results so far
+
+| Item | Finding | Result |
+| --- | --- | --- |
+| [pt01](items/pt01-idor-juice-shop/) Broken Access Control / IDOR (Juice Shop, T1190) | Any logged-in account's token could read any other account's basket by id; no server-side ownership check | No control: `VULNERABLE` (attacker read victim's basket, HTTP 200). A compensating-control proxy that cross-checks the JWT's caller id against the response body's owner id: `REMEDIATED` (HTTP 403), with both accounts' own basket reads still working in every condition |
+
 ## Items
 
 | Item | Finding family | Status |
 | --- | --- | --- |
-| [pt01-idor-juice-shop](items/pt01-idor-juice-shop/) | Broken access control / IDOR | Planned, not yet run |
+| [pt01-idor-juice-shop](items/pt01-idor-juice-shop/) | Broken access control / IDOR | Run live, 2026-11-03 |
 
 ## Keeping this safe
 

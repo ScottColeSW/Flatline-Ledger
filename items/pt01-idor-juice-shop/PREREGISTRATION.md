@@ -1,14 +1,22 @@
 # Preregistration: pt01-idor-juice-shop
 
-**Status: template only. Not yet committed as a real prediction.**
-
-A real preregistration here must be committed, unedited, before `ledger.py verify` is allowed to run live against this item (the harness checks this, it isn't just a convention). Fill in the fields below, commit, then run.
+**Status: run live, 2026-11-03. Prediction held exactly.**
 
 ## Prediction
 
 - Expected result before any fix: `VULNERABLE`
 - Expected result after the fix described in `README.md`: `REMEDIATED`
 - Expected cost to legitimate traffic: none (a logged-in user reading their own basket must still succeed in every condition)
+
+## Result
+
+Both halves of the prediction held on the first live run, no hedging needed:
+
+- Pre-fix (`http://localhost:3001`, direct to the Juice Shop container): `VULNERABLE`. The attacker account's bearer token read the victim account's basket by id, HTTP 200, with the victim's own `UserId` in the response body.
+- Post-fix (`http://localhost:3002`, through the compensating-control proxy): `REMEDIATED`, HTTP 403.
+- Legitimate check: both accounts could still read their own basket in both conditions. Cost: none.
+
+Raw results in `results/pt01-001-*.json`; the run that produced them is in the repo-root hash-chained log (`python ledger.py verify`).
 
 ## Pass bar
 
