@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt09-001",
+  "mitre_technique": "T1485",
+  "target": "http://localhost:3011",
+  "status": "REMEDIATED",
+  "exploit_http_status": 403,
+  "summary": "Blocked with HTTP 403.",
+  "legitimate_self_delete_ok": true,
+  "legitimate_self_delete_http_status": 200
+}

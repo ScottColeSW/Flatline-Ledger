@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt09-001",
+  "mitre_technique": "T1485",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "Attacker deleted the victim's feedback (id=13, owned by UserId=78) with no ownership check.",
+  "legitimate_self_delete_ok": true,
+  "legitimate_self_delete_http_status": 200
+}

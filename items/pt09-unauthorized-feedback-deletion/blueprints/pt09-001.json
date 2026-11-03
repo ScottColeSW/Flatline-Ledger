@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt09-001",
+  "mitre_technique": "T1485",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-862",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "DELETE",
+  "endpoint": "/api/Feedbacks/{id}",
+  "description": "Any authenticated account can delete any other account's feedback by id. Confirmed by Juice Shop's own scoreboard: its 'Five-Star Feedback' challenge solves when the count of 5-star feedback rows drops to zero, which fired the moment an unrelated customer account deleted another account's 5-star review. The captcha on feedback submission is trivially bypassed (the correct answer is returned in the same response that asks the question), but that's a separate, already-documented challenge (CAPTCHA Bypass), not this item's finding.",
+  "expected_exploit_indicator": "An attacker account's DELETE on a feedback id owned by a different account returns HTTP 200, and the row is actually gone afterward",
+  "expected_blocked_signal": [401, 403],
+  "legitimate_check": "An account must still be able to delete its own feedback in every condition."
+}
