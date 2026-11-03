@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt14-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3016",
+  "status": "REMEDIATED",
+  "exploit_http_status": 400,
+  "summary": "Blocked with HTTP 400.",
+  "legitimate_own_basket_ok": true,
+  "legitimate_own_basket_http_status": 200
+}

@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt14-001",
+  "mitre_technique": "T1565.001",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-235",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/api/BasketItems",
+  "description": "addBasketItem parses the raw request body with a streaming parser (clarinet) that preserves duplicate JSON keys rather than collapsing them the way JSON.parse would. Its ownership check compares the caller's own basket id against the FIRST occurrence of a repeated 'BasketId' key, but the item it actually inserts uses the LAST occurrence. A body with 'BasketId' listed twice, the caller's own id first and a victim's id second, passes the check and writes to the victim's basket. HTTP Parameter Pollution, not a missing check.",
+  "attack_body_template": "{\"BasketId\": {attacker_bid}, \"ProductId\": 1, \"quantity\": 1, \"BasketId\": {victim_bid}}",
+  "expected_exploit_indicator": "HTTP 200 with the created item's own BasketId equal to the victim's basket, not the attacker's",
+  "expected_blocked_signal": [400, 403],
+  "legitimate_check": "A normal single-key request, adding an item to one's own basket, must keep working in every condition."
+}

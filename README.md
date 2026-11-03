@@ -60,6 +60,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt11](items/pt11-forged-feedback-identity-spoofing/) Forged Feedback / Identity Spoofing (Juice Shop, CWE-345, T1565.001, A04:2021) | `POST /api/Feedbacks` trusts a client-supplied `UserId` outright; pt09's counterpart on deletion, this time on creation | No control: `VULNERABLE` (row saved under a victim's real id). An identity-pinning proxy that rewrites, not rejects: `REMEDIATED`, same HTTP 201, correct attribution, self-attribution unaffected |
 | [pt12](items/pt12-mass-assignment-admin-registration/) Mass Assignment on Registration (Juice Shop, CWE-915, T1136.001, A04:2021) | The most severe finding here needs the least access: the fully unauthenticated public signup form accepts a `role` field and assigns it outright, `role: "admin"` creates a genuine admin account | No control: `VULNERABLE` (resulting role: `admin`). A role-stripping proxy: `REMEDIATED` (resulting role: `customer`), normal registration unaffected |
 | [pt13](items/pt13-csrf-profile-update/) CSRF on Profile Username Update (Juice Shop, CWE-352, T1185, A01:2021) | `POST /profile` changes the username authenticated purely by cookie; `Origin`/`Referer` are read only for scoreboard tracking, never enforced. A forged origin with no CSRF token still succeeds | No control: `VULNERABLE` (forged origin, HTTP 302). An Origin-checking proxy: `REMEDIATED` (HTTP 403), same-origin updates unaffected |
+| [pt14](items/pt14-basket-parameter-pollution/) HTTP Parameter Pollution on Basket Items (Juice Shop, CWE-235, T1565.001, A01:2021) | A check that's correct in isolation: the ownership check reads the first occurrence of a duplicated `BasketId` key, the actual insert reads the last. One repeated key writes an item into a victim's basket | No control: `VULNERABLE` (item landed in the victim's basket). A duplicate-key-rejecting proxy: `REMEDIATED` (HTTP 400), normal single-key requests unaffected |
 
 ## Items
 
@@ -78,6 +79,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt11-forged-feedback-identity-spoofing](items/pt11-forged-feedback-identity-spoofing/) | Insecure design / identity spoofing (create) | Run live, 2026-11-03 |
 | [pt12-mass-assignment-admin-registration](items/pt12-mass-assignment-admin-registration/) | Insecure design / mass assignment | Run live, 2026-11-03 |
 | [pt13-csrf-profile-update](items/pt13-csrf-profile-update/) | Cross-site request forgery | Run live, 2026-11-03 |
+| [pt14-basket-parameter-pollution](items/pt14-basket-parameter-pollution/) | HTTP parameter pollution / broken access control | Run live, 2026-11-03 |
 
 ## Keeping this safe
 
