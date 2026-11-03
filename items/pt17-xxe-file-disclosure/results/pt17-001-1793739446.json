@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt17-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 410,
+  "summary": "The real contents of /etc/passwd came back in the upload's own error response.",
+  "legitimate_benign_upload_reached_backend": true,
+  "legitimate_benign_upload_http_status": 410
+}

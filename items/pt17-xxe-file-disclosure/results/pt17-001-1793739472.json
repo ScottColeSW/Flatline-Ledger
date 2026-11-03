@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt17-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3019",
+  "status": "REMEDIATED",
+  "exploit_http_status": 403,
+  "summary": "Blocked with HTTP 403.",
+  "legitimate_benign_upload_reached_backend": true,
+  "legitimate_benign_upload_http_status": 410
+}

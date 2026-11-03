@@ -1,0 +1,17 @@
+{
+  "vulnerability_id": "pt17-001",
+  "mitre_technique": "T1190",
+  "mitre_technique_secondary": "T1005",
+  "owasp_category": "A05:2021 - Security Misconfiguration",
+  "cwe": "CWE-611",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/file-upload",
+  "description": "POST /file-upload, reachable with no authentication at all, parses an uploaded .xml file with external entity resolution enabled (libxmljs parseXml(..., { noent: true })). A DOCTYPE defining an external SYSTEM entity gets resolved and reflected back in the deprecation error message. The vendor's own code carries a caution comment ('XXE attacks in Docker/Heroku containers regularly cause segfault crashes'); this item deliberately tests only the one-shot file-disclosure variant, never the DoS/billion-laughs variant, to avoid destabilizing a container every other item in this repo also depends on.",
+  "xxe_payload_entity_target": "file:///etc/passwd",
+  "expected_exploit_indicator": "The HTTP 410 deprecation error message contains the real contents of /etc/passwd",
+  "expected_blocked_signal": [400, 403],
+  "legitimate_check": "An ordinary XML upload with no DOCTYPE at all must still reach the backend unmodified (whatever Juice Shop's own deprecated-interface response to it is, independent of this control)."
+}
