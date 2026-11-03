@@ -37,6 +37,23 @@ python items/pt04-ssrf-profile-image/scenario.py --target http://localhost:3007 
 
 Raw per-run output: `results/pt04-001-*.json`. `python ledger.py verify` from the repo root confirms both runs are in the hash-chained log untampered.
 
+## A note on Juice Shop's own scoreboard, and why it didn't light up
+
+Scott noticed Juice Shop's own challenge tracker didn't mark its "SSRF" challenge solved after the live run above, and asked. Worth answering properly rather than shrugging it off: pulling `build/routes/profileImageUrlUpload.js` straight out of the container shows why.
+
+```js
+if (url.match(/(.)*solve\/challenges\/server-side(.)*/) !== null)
+    req.app.locals.abused_ssrf_bug = true;
+```
+
+The fetch happens unconditionally once logged in; this regex check is a side channel that only flags a specific URL pattern, independent of whether a real SSRF occurred. And flipping that flag isn't enough on its own: `routes/verify.js` only calls `challengeUtils.solve(...)` when a *separate* request hits `/solve/challenges/server-side?key=tRy_H4rd3r_n0thIng_iS_Imp0ssibl3`, which `server.js` wires up as the app's own internal verification route. The challenge's intended solve path is narrower than the real vulnerability: make the SSRF target the app's *own* `/solve/challenges/server-side` endpoint with that magic key, not merely any arbitrary external host.
+
+Confirmed by hand, once: pointing `imageUrl` at `http://localhost:3000/solve/challenges/server-side?key=tRy_H4rd3r_n0thIng_iS_Imp0ssibl3` (a self-referential SSRF) flips `GET /api/Challenges/?name=SSRF` to `"solved": true`. This corroborates the finding, it doesn't supersede it: the out-of-band callback this item's `scenario.py` uses proves the more general and more serious claim (arbitrary destination, not just the app's own verification route), which is also why it's the one the automated scenario keeps, not this narrower one.
+
+This corroboration step is **not** wired into `scenario.py`, on purpose: Juice Shop's solved flag is one-way for the life of the container, so re-running it against the same running instance would report "corroborated" on every future run regardless of whether that run's fix actually worked, a repeatable check that always passes isn't a check. Recorded here as a one-time, by-hand finding instead.
+
+(For [pt05](../pt05-vulnerable-dependency/): nothing comparable applies, it never sends the running app any traffic at all, which is the point, not a gap.)
+
 ## What this does not show
 
 - The allowlist here is hostname-only; it doesn't resolve DNS and check the resulting IP, so a hostname that resolves differently at request time than at allowlist-check time (DNS rebinding) is not covered.
