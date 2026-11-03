@@ -1,0 +1,23 @@
+{
+  "vulnerability_id": "pt05-001",
+  "mitre_technique": null,
+  "mitre_technique_note": "ATT&CK doesn't have a clean technique for 'a known-vulnerable dependency is present but not independently exploited here'; forcing one would overclaim. See README for why this item is classified by CWE instead, and how it differs from pt01-04.",
+  "cwe": "CWE-1104",
+  "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
+  "target": {
+    "host": "http://localhost:3001",
+    "container_name": "flatline-juice-shop"
+  },
+  "method": "SCA",
+  "description": "Juice Shop's own package-lock.json pins jsonwebtoken at 0.4.0, an abandoned release with multiple known advisories including CVE-2015-9235 (CRITICAL, JWT verification bypass). Checked against OSV.dev, the public vulnerability database, not exploited against the running app in this item.",
+  "tracked_package": {
+    "name": "jsonwebtoken",
+    "ecosystem": "npm",
+    "installed_version": "0.4.0",
+    "proposed_fix_version": "9.0.3"
+  },
+  "scan_scope": "The 69 packages listed directly under package.json's \"dependencies\", resolved to their exact installed version via package-lock.json. Transitive dependencies were not scanned by this item.",
+  "vulnerability_database": "osv.dev (OSV), queried read-only with package name + exact version, no exploit traffic sent anywhere",
+  "expected_exploit_indicator": "OSV.dev reports one or more known advisories for the installed version",
+  "expected_remediated_indicator": "OSV.dev reports zero known advisories for the proposed fix version"
+}

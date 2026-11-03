@@ -1,0 +1,14 @@
+{
+  "vulnerability_id": "pt05-001",
+  "mitre_technique": null,
+  "cwe": "CWE-1104",
+  "mode": "proposed-fix",
+  "status": "REMEDIATED",
+  "summary": "jsonwebtoken@9.0.3 (proposed fix, not installed into the running container) carries no known advisories.",
+  "tracked_package": "jsonwebtoken",
+  "tracked_package_version_checked": "9.0.3",
+  "tracked_package_known_vulns": [],
+  "direct_deps_scanned": 69,
+  "direct_deps_with_known_vulns": 17,
+  "all_hits": null
+}

@@ -10,7 +10,7 @@ Most pen testing deliverables are a report and a handshake: here are the finding
 
 ## Scope, stated once
 
-- **Lab targets only.** Juice Shop, DVWA, WebGoat, and similar intentionally-vulnerable apps, run locally in containers you control. Nothing here is built to point at a URL you don't own.
+- **Lab targets only.** Juice Shop, DVWA, WebGoat, and similar intentionally-vulnerable apps, run locally in containers you control. Nothing here is built to point at a URL you don't own. The one exception: an SCA item (pt05) queries a public, read-only vulnerability database (osv.dev) with a package name and version, no exploit traffic, the same kind of lookup `npm audit` makes as routine practice. Documented at the item that does it, not buried.
 - **No live credentials, no production tickets.** The Jira/GitHub-Issues loop runs against a sandbox project or this repo's own issue tracker, never a real tenant with real bearer tokens.
 - **Evidence, not an audit.** A finding here is a measured result against one lab target under one configuration, not a compliance claim about any organization's actual posture.
 - **Early draft.** Structure first, numbers follow. See [docs/OVERLAPS.md](docs/OVERLAPS.md) for how this connects to the other two repos, and `items/*/PREREGISTRATION.md` for what's actually been run versus only planned.
@@ -51,6 +51,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt02](items/pt02-sqli-login-bypass/) SQL Injection Login Bypass (Juice Shop, T1190, A03:2021) | `' OR 1=1--` as the login email authenticates as the admin account with no valid password | No control: `VULNERABLE` (authenticated as `admin@juice-sh.op`). A naive SQL-metacharacter filter: `REMEDIATED` (HTTP 403), ordinary logins unaffected. Surprise: a legitimate email containing an apostrophe already fails against the unmodified backend (HTTP 500), and the filter blocks it too, just with a cleaner error |
 | [pt03](items/pt03-exposed-ftp-directory/) Exposed `/ftp/` Directory (Juice Shop, T1083 / T1552.001, A05:2021) | Unauthenticated directory listing exposing a file marked confidential and a KeePass credential database | No control: `VULNERABLE` on all three (listing, confidential doc, `.kdbx`, all HTTP 200, no auth). A default-deny proxy with a one-file allowlist for a document checked to be genuinely public: `REMEDIATED` (403 on the rest), that one legitimate document still served at 200 |
 | [pt04](items/pt04-ssrf-profile-image/) SSRF via Profile Image URL (Juice Shop, T1190, A10:2021) | The server fetches an arbitrary `imageUrl` itself (`User-Agent: node` on the callback, not a browser); confirmed with an out-of-band listener, not inferred from a status code | No control: `VULNERABLE` (attacker-controlled callback hit). A destination-allowlisting proxy standing in for a vetted image-CDN list: `REMEDIATED` (callback never hit), the one allowlisted CDN still reachable |
+| [pt05](items/pt05-vulnerable-dependency/) Vulnerable Dependency (Juice Shop, CWE-1104, A06:2021) | `jsonwebtoken@0.4.0`, as actually installed (resolved from the lockfile, not guessed from a version range), carries `CVE-2015-9235` (CRITICAL) among 4 known advisories; 17 of 69 direct dependencies have at least one | SCA, not DAST, by design: no exploit attempted, see item README for why. `--mode current`: `VULNERABLE`. `--mode proposed-fix`: the current published version (`9.0.3`) checked clean, `REMEDIATED`, without installing it into the running container |
 
 ## Items
 
@@ -60,6 +61,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt02-sqli-login-bypass](items/pt02-sqli-login-bypass/) | SQL injection login bypass | Run live, 2026-11-03 |
 | [pt03-exposed-ftp-directory](items/pt03-exposed-ftp-directory/) | Security misconfiguration / unauthenticated data exposure | Run live, 2026-11-03 |
 | [pt04-ssrf-profile-image](items/pt04-ssrf-profile-image/) | Server-side request forgery | Run live, 2026-11-03 |
+| [pt05-vulnerable-dependency](items/pt05-vulnerable-dependency/) | Vulnerable and outdated components (SCA) | Run live, 2026-11-03 |
 
 ## Keeping this safe
 

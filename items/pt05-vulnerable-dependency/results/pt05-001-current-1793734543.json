@@ -1,0 +1,103 @@
+{
+  "vulnerability_id": "pt05-001",
+  "mitre_technique": null,
+  "cwe": "CWE-1104",
+  "mode": "current",
+  "status": "VULNERABLE",
+  "summary": "jsonwebtoken@0.4.0 carries 4 known advisory/advisories: ['GHSA-8cf7-32gw-wr33', 'GHSA-c7hr-j4mj-j2w6', 'GHSA-hjrf-2m68-5959', 'GHSA-qwph-4952-7xr6'].",
+  "tracked_package": "jsonwebtoken",
+  "tracked_package_version_checked": "0.4.0",
+  "tracked_package_known_vulns": [
+    "GHSA-8cf7-32gw-wr33",
+    "GHSA-c7hr-j4mj-j2w6",
+    "GHSA-hjrf-2m68-5959",
+    "GHSA-qwph-4952-7xr6"
+  ],
+  "direct_deps_scanned": 69,
+  "direct_deps_with_known_vulns": 17,
+  "all_hits": {
+    "body-parser": [
+      "GHSA-27r3-jxmh-p828",
+      "GHSA-v422-hmwv-36x6"
+    ],
+    "compression": [
+      "GHSA-vc2v-76pw-4v95"
+    ],
+    "dottie": [
+      "GHSA-r5mx-6wc6-7h9w"
+    ],
+    "express-jwt": [
+      "GHSA-6g6m-m6h5-w9gf"
+    ],
+    "file-type": [
+      "GHSA-5v7r-6r5c-r473"
+    ],
+    "glob": [
+      "GHSA-3g3m-2fjr-6pw4",
+      "GHSA-5j98-mcp5-4vw2"
+    ],
+    "hbs": [
+      "GHSA-7f5c-rpf4-86p8"
+    ],
+    "js-yaml": [
+      "GHSA-2883-xcg3-v3hh",
+      "GHSA-52cp-r559-cp3m",
+      "GHSA-5p4m-2wfm-xmqj",
+      "GHSA-h67p-54hq-rp68",
+      "GHSA-mh29-5h37-fv8m"
+    ],
+    "jsonwebtoken": [
+      "GHSA-8cf7-32gw-wr33",
+      "GHSA-c7hr-j4mj-j2w6",
+      "GHSA-hjrf-2m68-5959",
+      "GHSA-qwph-4952-7xr6"
+    ],
+    "libxmljs": [
+      "GHSA-6433-x5p4-8jc7",
+      "GHSA-jv72-59wq-8rxm",
+      "GHSA-mg49-jqgw-gcj6"
+    ],
+    "marsdb": [
+      "GHSA-5mrr-rgp6-x4gr"
+    ],
+    "morgan": [
+      "GHSA-4vj7-5mj6-jm8m",
+      "GHSA-9f6g-j8ch-79g4",
+      "GHSA-jxfw-x594-9x9m"
+    ],
+    "multer": [
+      "GHSA-44fp-w29j-9vj5",
+      "GHSA-4pg4-qvpc-4q3h",
+      "GHSA-535w-7cp7-47q4",
+      "GHSA-5528-5vmv-3xc2",
+      "GHSA-72gw-mp4g-v24j",
+      "GHSA-fjgf-rc76-4x9p",
+      "GHSA-g5hg-p3ph-g8qg",
+      "GHSA-qvfw-j98x-7q72",
+      "GHSA-v52c-386h-88mc",
+      "GHSA-wc9g-mqfw-jrwm",
+      "GHSA-xf7r-hgr6-v32p"
+    ],
+    "notevil": [
+      "GHSA-8g4m-cjm2-96wq"
+    ],
+    "sanitize-html": [
+      "GHSA-3j7m-hmh3-9jmp",
+      "GHSA-cgfm-xwp7-2cvr",
+      "GHSA-cv27-6wvh-8x7j",
+      "GHSA-jxwj-j7wr-gfrw",
+      "GHSA-mjxr-4v3x-q3m4",
+      "GHSA-qhxp-v273-g94h",
+      "GHSA-rjqq-98f6-6j3r",
+      "GHSA-rm97-x556-q36h",
+      "GHSA-x3q4-9hxx-gx8m",
+      "GHSA-xc6g-ggrc-qq4r"
+    ],
+    "sequelize": [
+      "GHSA-6457-6jrx-69cr"
+    ],
+    "socket.io": [
+      "GHSA-25hc-qcg6-38wj"
+    ]
+  }
+}
