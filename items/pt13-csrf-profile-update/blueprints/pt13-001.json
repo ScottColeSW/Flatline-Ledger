@@ -1,0 +1,17 @@
+{
+  "vulnerability_id": "pt13-001",
+  "mitre_technique": "T1185",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-352",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/profile",
+  "description": "POST /profile changes the logged-in user's username, authenticated purely by the 'token' cookie, with no anti-CSRF token and no Origin/Referer enforcement actually blocking the request. A request carrying a forged Origin header, exactly what a cross-site form submission would send, still succeeds. Juice Shop's own 'CSRF' scoreboard entry checks for a themed origin (htmledit.squarefree.com, the sandbox used in the official walkthrough) and body.username !== the current username; the vulnerability itself is general and not limited to that one origin. The *_host fields below are bare hostnames, never dialed as a network destination; scenario.py builds an Origin header value from them, the one place this item sends a scheme-prefixed string anywhere.",
+  "forged_origin_generic_host": "evil.flatline.test",
+  "forged_origin_themed_host": "htmledit.squarefree.com",
+  "expected_exploit_indicator": "The response's new session cookie decodes to a username matching the attacker-chosen value, with no CSRF token presented and an Origin header that does not match the app's own host",
+  "expected_blocked_signal": [403],
+  "legitimate_check": "A same-origin profile update (Origin matching the app's own host) must keep working in every condition."
+}

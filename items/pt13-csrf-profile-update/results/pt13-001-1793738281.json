@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt13-001",
+  "mitre_technique": "T1185",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 302,
+  "summary": "A forged, cross-origin request with no CSRF token changed the username anyway.",
+  "legitimate_same_origin_ok": true,
+  "themed_origin_also_works": true
+}

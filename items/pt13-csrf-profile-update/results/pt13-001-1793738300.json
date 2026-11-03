@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt13-001",
+  "mitre_technique": "T1185",
+  "target": "http://localhost:3015",
+  "status": "REMEDIATED",
+  "exploit_http_status": 403,
+  "summary": "Blocked with HTTP 403.",
+  "legitimate_same_origin_ok": true,
+  "themed_origin_also_works": false
+}

@@ -59,6 +59,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt10](items/pt10-unsafe-config-reopens-sanitization/) Unsafe Config Reopens XSS + NoSQL Injection (Juice Shop, CWE-943/CWE-79, T1190, A05:2021) | A vendor-shipped config (`NODE_ENV=unsafe`) disables the sanitization behind `trackOrder`'s MongoDB `$where` clause, reopening reflected XSS **and** a NoSQL injection that dumped another account's order history | Default Docker config: `REMEDIATED` (already safe by default). `NODE_ENV=unsafe`: `VULNERABLE` on both, confirmed on a second container's own scoreboard |
 | [pt11](items/pt11-forged-feedback-identity-spoofing/) Forged Feedback / Identity Spoofing (Juice Shop, CWE-345, T1565.001, A04:2021) | `POST /api/Feedbacks` trusts a client-supplied `UserId` outright; pt09's counterpart on deletion, this time on creation | No control: `VULNERABLE` (row saved under a victim's real id). An identity-pinning proxy that rewrites, not rejects: `REMEDIATED`, same HTTP 201, correct attribution, self-attribution unaffected |
 | [pt12](items/pt12-mass-assignment-admin-registration/) Mass Assignment on Registration (Juice Shop, CWE-915, T1136.001, A04:2021) | The most severe finding here needs the least access: the fully unauthenticated public signup form accepts a `role` field and assigns it outright, `role: "admin"` creates a genuine admin account | No control: `VULNERABLE` (resulting role: `admin`). A role-stripping proxy: `REMEDIATED` (resulting role: `customer`), normal registration unaffected |
+| [pt13](items/pt13-csrf-profile-update/) CSRF on Profile Username Update (Juice Shop, CWE-352, T1185, A01:2021) | `POST /profile` changes the username authenticated purely by cookie; `Origin`/`Referer` are read only for scoreboard tracking, never enforced. A forged origin with no CSRF token still succeeds | No control: `VULNERABLE` (forged origin, HTTP 302). An Origin-checking proxy: `REMEDIATED` (HTTP 403), same-origin updates unaffected |
 
 ## Items
 
@@ -76,6 +77,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt10-unsafe-config-reopens-sanitization](items/pt10-unsafe-config-reopens-sanitization/) | Security misconfiguration / reflected XSS + NoSQL injection | Run live, 2026-11-03 |
 | [pt11-forged-feedback-identity-spoofing](items/pt11-forged-feedback-identity-spoofing/) | Insecure design / identity spoofing (create) | Run live, 2026-11-03 |
 | [pt12-mass-assignment-admin-registration](items/pt12-mass-assignment-admin-registration/) | Insecure design / mass assignment | Run live, 2026-11-03 |
+| [pt13-csrf-profile-update](items/pt13-csrf-profile-update/) | Cross-site request forgery | Run live, 2026-11-03 |
 
 ## Keeping this safe
 
