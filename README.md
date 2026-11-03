@@ -58,6 +58,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt09](items/pt09-unauthorized-feedback-deletion/) Unauthorized Feedback Deletion (Juice Shop, CWE-862, T1485, A01:2021) | Found by reading an odd scoreboard solve condition literally (5-star feedback count must hit zero): any authenticated account can delete any other account's feedback by id | No control: `VULNERABLE` (attacker deletes victim's feedback, HTTP 200). An ownership-check proxy: `REMEDIATED` (HTTP 403), self-delete unaffected |
 | [pt10](items/pt10-unsafe-config-reopens-sanitization/) Unsafe Config Reopens XSS + NoSQL Injection (Juice Shop, CWE-943/CWE-79, T1190, A05:2021) | A vendor-shipped config (`NODE_ENV=unsafe`) disables the sanitization behind `trackOrder`'s MongoDB `$where` clause, reopening reflected XSS **and** a NoSQL injection that dumped another account's order history | Default Docker config: `REMEDIATED` (already safe by default). `NODE_ENV=unsafe`: `VULNERABLE` on both, confirmed on a second container's own scoreboard |
 | [pt11](items/pt11-forged-feedback-identity-spoofing/) Forged Feedback / Identity Spoofing (Juice Shop, CWE-345, T1565.001, A04:2021) | `POST /api/Feedbacks` trusts a client-supplied `UserId` outright; pt09's counterpart on deletion, this time on creation | No control: `VULNERABLE` (row saved under a victim's real id). An identity-pinning proxy that rewrites, not rejects: `REMEDIATED`, same HTTP 201, correct attribution, self-attribution unaffected |
+| [pt12](items/pt12-mass-assignment-admin-registration/) Mass Assignment on Registration (Juice Shop, CWE-915, T1136.001, A04:2021) | The most severe finding here needs the least access: the fully unauthenticated public signup form accepts a `role` field and assigns it outright, `role: "admin"` creates a genuine admin account | No control: `VULNERABLE` (resulting role: `admin`). A role-stripping proxy: `REMEDIATED` (resulting role: `customer`), normal registration unaffected |
 
 ## Items
 
@@ -74,6 +75,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt09-unauthorized-feedback-deletion](items/pt09-unauthorized-feedback-deletion/) | Broken access control / missing authorization (delete) | Run live, 2026-11-03 |
 | [pt10-unsafe-config-reopens-sanitization](items/pt10-unsafe-config-reopens-sanitization/) | Security misconfiguration / reflected XSS + NoSQL injection | Run live, 2026-11-03 |
 | [pt11-forged-feedback-identity-spoofing](items/pt11-forged-feedback-identity-spoofing/) | Insecure design / identity spoofing (create) | Run live, 2026-11-03 |
+| [pt12-mass-assignment-admin-registration](items/pt12-mass-assignment-admin-registration/) | Insecure design / mass assignment | Run live, 2026-11-03 |
 
 ## Keeping this safe
 

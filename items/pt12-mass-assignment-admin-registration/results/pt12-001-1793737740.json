@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt12-001",
+  "mitre_technique": "T1136.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "registration_http_status": 201,
+  "resulting_role": "admin",
+  "summary": "A fully unauthenticated registration with role=admin in the body created a real admin account (pt12-exploit-1793737740629@flatline.test), no exploit beyond that one field.",
+  "legitimate_default_role_ok": true,
+  "legitimate_default_role": "customer"
+}

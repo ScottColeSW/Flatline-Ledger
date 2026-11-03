@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt12-001",
+  "mitre_technique": "T1136.001",
+  "owasp_category": "A04:2021 - Insecure Design",
+  "cwe": "CWE-915",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/api/Users",
+  "description": "The public, unauthenticated registration endpoint accepts a 'role' field in the request body and assigns it outright. Including \"role\": \"admin\" alongside the normal email/password/passwordRepeat fields creates a genuine admin account, no exploit beyond one extra field in a public signup form, no prior authentication of any kind. Confirmed by Juice Shop's own 'Admin Registration' scoreboard entry, which solves on exactly this condition.",
+  "attack_field": {"role": "admin"},
+  "expected_exploit_indicator": "The newly registered account's own JWT, obtained by logging in immediately after, decodes to data.role == 'admin'",
+  "expected_blocked_signal": "The created account's role is 'customer' regardless of what the registration body claimed",
+  "legitimate_check": "A normal registration with no role field at all must still default to 'customer' in every condition."
+}

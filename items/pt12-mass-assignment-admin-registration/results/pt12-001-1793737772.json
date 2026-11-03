@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt12-001",
+  "mitre_technique": "T1136.001",
+  "target": "http://localhost:3014",
+  "status": "REMEDIATED",
+  "registration_http_status": 201,
+  "resulting_role": "customer",
+  "summary": "Registration with role=admin in the body still resulted in role='customer'.",
+  "legitimate_default_role_ok": true,
+  "legitimate_default_role": "customer"
+}
