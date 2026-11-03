@@ -67,6 +67,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt18](items/pt18-unsigned-jwt/) Unsigned JWT ("alg": "none") (Juice Shop, CWE-347, T1606.001, A02:2021) | pt06's sibling, same unrestricted `verify()` call, a simpler forgery: a token with no signature at all (`alg: "none"`) authenticates as admin | No control: `VULNERABLE` (HTTP 200, no signature needed). pt06's existing proxy, unmodified: `REMEDIATED` (401), confirming one fix covers both forgery variants |
 | [pt19](items/pt19-exposed-metrics/) Exposed Metrics Endpoint (Juice Shop, CWE-200, T1592.002, A05:2021) | Started as an incidental scoreboard flip from earlier curl traffic, formalized on request: `GET /metrics` leaks host fingerprinting and business metrics (total users, total wallet balance) with zero auth | No control: `VULNERABLE` (all markers present). A shared-secret proxy: `REMEDIATED` (401), a correctly-credentialed scrape unaffected |
 | [pt20](items/pt20-deprecated-interface/) Deprecated Interface Not Properly Shut Down (Juice Shop, CWE-16, A05:2021) | Same route pt17 exploited, an earlier finding: a benign `.xml` upload gets `HTTP 410` with a message, proving the route still runs real logic instead of returning a plain 404 | No control: `VULNERABLE` (410, logic ran first). A true-decommissioning proxy: `REMEDIATED` (404, as if the route never existed), the still-supported `.pdf` path unaffected |
+| [pt21](items/pt21-verbose-error-disclosure/) Verbose Error Disclosure (Juice Shop, CWE-209, T1592.002, A05:2021) | A third incidental scoreboard flip, formalized: the apostrophe-email trigger from pt02 renders a full stack trace (file paths, ORM, DB engine) as the HTTP 500 response body | No control: `VULNERABLE` (full stack trace leaked). A leak-scrubbing proxy: `REMEDIATED` (same 500, generic body), normal logins unaffected |
 
 ## Items
 
@@ -92,6 +93,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt18-unsigned-jwt](items/pt18-unsigned-jwt/) | Cryptographic failure / authentication bypass | Run live, 2026-11-03 |
 | [pt19-exposed-metrics](items/pt19-exposed-metrics/) | Security misconfiguration / sensitive data exposure | Run live, 2026-11-03 |
 | [pt20-deprecated-interface](items/pt20-deprecated-interface/) | Security misconfiguration / improper decommissioning | Run live, 2026-11-03 |
+| [pt21-verbose-error-disclosure](items/pt21-verbose-error-disclosure/) | Security misconfiguration / information disclosure | Run live, 2026-11-03 |
 
 ## Keeping this safe
 

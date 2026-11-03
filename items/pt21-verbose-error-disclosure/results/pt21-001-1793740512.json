@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt21-001",
+  "mitre_technique": "T1592.002",
+  "target": "http://localhost:3022",
+  "status": "REMEDIATED",
+  "exploit_http_status": 500,
+  "summary": "HTTP 500 with no file paths, library names, or stack trace content.",
+  "legitimate_login_ok": true,
+  "legitimate_login_http_status": 200
+}

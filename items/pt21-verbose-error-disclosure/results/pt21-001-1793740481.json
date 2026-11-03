@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt21-001",
+  "mitre_technique": "T1592.002",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 500,
+  "summary": "HTTP 500 response leaked internal details: ['node_modules', 'stacktrace', '.js:'].",
+  "legitimate_login_ok": true,
+  "legitimate_login_http_status": 200
+}

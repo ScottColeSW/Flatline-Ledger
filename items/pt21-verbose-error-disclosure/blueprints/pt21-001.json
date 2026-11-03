@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt21-001",
+  "mitre_technique": "T1592.002",
+  "owasp_category": "A05:2021 - Security Misconfiguration",
+  "cwe": "CWE-209",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/user/login",
+  "description": "Logging in with an email address that legitimately contains an apostrophe (the same unsanitized $where-style query pt02 found by accident) crashes the login route with a full Node.js stack trace rendered as the HTTP response: internal file paths (/juice-shop/node_modules/sequelize/...), the ORM in use (Sequelize), the database engine (SQLite), and exact line numbers. The real fix for the apostrophe case itself belongs to pt02; this item measures a separate, general hygiene gap: whatever triggers an unhandled error, the response should never be a raw stack trace.",
+  "trigger_email_local_part": "pt21-o'brien",
+  "expected_exploit_indicator": "An HTTP 500 response whose body contains internal file path fragments (e.g. 'node_modules/sequelize')",
+  "expected_blocked_signal": "A generic error response with no file paths, library names, or stack trace content, any status code",
+  "legitimate_check": "A normal, valid login must keep succeeding in every condition."
+}
