@@ -1,0 +1,9 @@
+{
+  "vulnerability_id": "pt15-001",
+  "target": "http://localhost:3017",
+  "status": "REMEDIATED",
+  "exploit_http_status": 400,
+  "summary": "Blocked with HTTP 400.",
+  "legitimate_paid_upgrade_ok": true,
+  "legitimate_paid_upgrade_http_status": 200
+}

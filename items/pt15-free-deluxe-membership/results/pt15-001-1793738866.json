@@ -1,0 +1,9 @@
+{
+  "vulnerability_id": "pt15-001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "Upgraded to deluxe with no paymentMode field at all; no payment of any kind was processed.",
+  "legitimate_paid_upgrade_ok": true,
+  "legitimate_paid_upgrade_http_status": 200
+}

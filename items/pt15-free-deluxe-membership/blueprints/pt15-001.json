@@ -1,0 +1,17 @@
+{
+  "vulnerability_id": "pt15-001",
+  "mitre_technique": null,
+  "mitre_technique_note": "This is a business-logic/payment-bypass flaw, not an attacker tradecraft technique; ATT&CK has no clean mapping for 'got a paid feature without paying,' same honest gap pt05 documents for a different reason.",
+  "owasp_category": "A04:2021 - Insecure Design",
+  "cwe_primary": "CWE-840",
+  "cwe_secondary": "CWE-20",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/deluxe-membership",
+  "description": "upgradeToDeluxe only validates payment when paymentMode is exactly 'wallet' or 'card'. Any other value, including omitting the field entirely, skips both payment branches and upgrades the account to deluxe role outright. No charge, no wallet debit, no card check. A default-deny branch for an unrecognized payment mode was never written.",
+  "expected_exploit_indicator": "The response's new token decodes to role: 'deluxe' after a request with no paymentMode field at all",
+  "expected_blocked_signal": [400, 403],
+  "legitimate_check": "A real wallet payment, with sufficient balance, must still succeed in every condition."
+}
