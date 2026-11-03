@@ -1,0 +1,12 @@
+{
+  "vulnerability_id": "pt02-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3003",
+  "status": "REMEDIATED",
+  "exploit_http_status": 403,
+  "summary": "Blocked with HTTP 403.",
+  "legitimate_normal_login_ok": true,
+  "legitimate_quoted_email_registered": true,
+  "legitimate_quoted_email_login_ok": false,
+  "legitimate_quoted_email_login_http_status": 403
+}

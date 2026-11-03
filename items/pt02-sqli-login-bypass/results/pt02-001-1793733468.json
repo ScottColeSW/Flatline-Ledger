@@ -1,0 +1,12 @@
+{
+  "vulnerability_id": "pt02-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "Injection payload authenticated as admin (admin@juice-sh.op) with no valid password.",
+  "legitimate_normal_login_ok": true,
+  "legitimate_quoted_email_registered": true,
+  "legitimate_quoted_email_login_ok": false,
+  "legitimate_quoted_email_login_http_status": 500
+}

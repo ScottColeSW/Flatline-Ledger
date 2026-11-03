@@ -1,0 +1,19 @@
+{
+  "vulnerability_id": "pt02-001",
+  "mitre_technique": "T1190",
+  "owasp_category": "A03:2021 - Injection",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/user/login",
+  "description": "A classic SQL injection login bypass: an email field built into the backend's SQL query with string concatenation lets a crafted email short-circuit the WHERE clause and authenticate as the first row in the users table (the admin account) without knowing any password.",
+  "attack_payload": {
+    "email": "' OR 1=1--",
+    "password": "whatever"
+  },
+  "expected_exploit_indicator": "HTTP 200 with authentication.token present and data.role == \"admin\" despite no valid admin password being supplied",
+  "expected_blocked_signal": [400, 401, 403],
+  "legitimate_check": "A normal login with a real, correct email/password must still succeed in every condition.",
+  "legitimate_edge_case": "An email address that legitimately contains a single quote (e.g. a name like O'Brien) must also still be able to register and log in. A naive input filter that blocks quote characters outright will break this and should be scored as a cost, not a free win."
+}
