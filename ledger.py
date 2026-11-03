@@ -21,21 +21,22 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from urllib.parse import urlparse
 
 REPO_ROOT = Path(__file__).resolve().parent
 LOG_PATH = REPO_ROOT / "results" / "ledger_log.jsonl"
 
-# Any target host that isn't one of these (or a *.localhost / *.test name,
-# or a bare docker-compose service name with no dots) fails closed. This is
-# the one rule the README promises is enforced, not just stated.
-ALLOWED_HOST_PREFIXES = (
-    "http://localhost",
-    "https://localhost",
-    "http://127.0.0.1",
-    "https://127.0.0.1",
-    "http://[::1]",
-    "https://[::1]",
-)
+# Any target host that isn't one of these fails closed. This is the one
+# rule the README promises is enforced, not just stated.
+ALLOWED_HOSTNAMES = {
+    "localhost",
+    "127.0.0.1",
+    "::1",
+    # Docker's own name for "the machine this container is running on,"
+    # never a real external domain. Used by SSRF items (pt04) so the
+    # oracle a container calls back to is still categorically local.
+    "host.docker.internal",
+}
 
 
 class GuardError(RuntimeError):
@@ -62,19 +63,37 @@ def _is_committed_and_unedited(path: Path) -> bool:
 
 
 def guard_target_host(host: str) -> None:
-    """Fail closed unless `host` is localhost, 127.0.0.1, ::1, or a bare
-    docker-compose service name (no scheme, no dot)."""
-    if host.startswith(ALLOWED_HOST_PREFIXES):
+    """Fail closed unless `host` is localhost, 127.0.0.1, ::1,
+    host.docker.internal, or a bare docker-compose service name (no
+    scheme, no dot)."""
+    parsed = urlparse(host if "://" in host else f"//{host}")
+    hostname = (parsed.hostname or "").lower()
+    if hostname in ALLOWED_HOSTNAMES:
         return
     if "://" not in host and "." not in host:
         # bare service name, e.g. "juice-shop" inside this repo's own
         # docker-compose network -- allowed, but only here, never a FQDN.
         return
     raise GuardError(
-        f"Refusing target host '{host}': only localhost/127.0.0.1/::1 or a "
-        "bare compose service name is allowed. This harness does not run "
-        "against anything that looks like a real domain."
+        f"Refusing target host '{host}': only localhost/127.0.0.1/::1, "
+        "host.docker.internal, or a bare compose service name is allowed. "
+        "This harness does not run against anything that looks like a real domain."
     )
+
+
+def guard_all_urls_in(data) -> None:
+    """Recursively check every http(s)-looking string value in a parsed
+    JSON structure, not just a top-level target.host field. Anything a
+    blueprint tells a target to call out to has to pass the same guard
+    as the target itself."""
+    if isinstance(data, dict):
+        for value in data.values():
+            guard_all_urls_in(value)
+    elif isinstance(data, list):
+        for item in data:
+            guard_all_urls_in(item)
+    elif isinstance(data, str) and data.startswith(("http://", "https://")):
+        guard_target_host(data)
 
 
 def cmd_predict(item_dir: str) -> None:
@@ -101,8 +120,7 @@ def cmd_predict(item_dir: str) -> None:
         if not _is_committed_and_unedited(bp):
             raise GuardError(f"{bp} has uncommitted changes; commit before predicting.")
         data = json.loads(bp.read_text())
-        host = data.get("target", {}).get("host", "")
-        guard_target_host(host)
+        guard_all_urls_in(data)
 
     _append_log(
         {

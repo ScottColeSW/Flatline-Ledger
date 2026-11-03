@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt04-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "attack_profile_image_http_status": 200,
+  "legit_profile_image_http_status": 200,
+  "summary": "Server made an outbound request to the attacker-controlled callback host.",
+  "legitimate_cdn_oracle_hit": true
+}

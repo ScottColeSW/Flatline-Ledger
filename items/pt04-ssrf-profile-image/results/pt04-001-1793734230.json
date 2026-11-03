@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt04-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3007",
+  "status": "REMEDIATED",
+  "attack_profile_image_http_status": 403,
+  "legit_profile_image_http_status": 200,
+  "summary": "Attacker callback not reached; allowlisted CDN still reachable.",
+  "legitimate_cdn_oracle_hit": true
+}

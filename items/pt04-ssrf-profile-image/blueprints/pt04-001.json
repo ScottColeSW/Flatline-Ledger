@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt04-001",
+  "mitre_technique": "T1190",
+  "owasp_category": "A10:2021 - Server-Side Request Forgery",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/profile/image/url",
+  "description": "A logged-in user can set their profile image from an arbitrary URL. The server fetches that URL itself (SSRF), not the browser; confirmed with an out-of-band callback listener that recorded the backend's own User-Agent (\"node\") making the request. Any destination reachable from the container, not just image hosts, is fetchable this way.",
+  "attacker_callback_host": "http://host.docker.internal:3005",
+  "trusted_image_cdn_host": "http://host.docker.internal:3006",
+  "expected_exploit_indicator": "The attacker-controlled callback listener on the attacker_callback_host receives a request with the test's random marker in the path",
+  "expected_blocked_signal": "No callback received within the wait window, with the endpoint rejecting or no-oping the request instead of fetching it",
+  "legitimate_check": "A profile-image URL pointing at the trusted_image_cdn_host (standing in for a vetted, allowlisted image CDN) must still be fetchable in every condition."
+}

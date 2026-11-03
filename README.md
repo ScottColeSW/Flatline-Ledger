@@ -50,6 +50,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt01](items/pt01-idor-juice-shop/) Broken Access Control / IDOR (Juice Shop, T1190) | Any logged-in account's token could read any other account's basket by id; no server-side ownership check | No control: `VULNERABLE` (attacker read victim's basket, HTTP 200). A compensating-control proxy that cross-checks the JWT's caller id against the response body's owner id: `REMEDIATED` (HTTP 403), with both accounts' own basket reads still working in every condition |
 | [pt02](items/pt02-sqli-login-bypass/) SQL Injection Login Bypass (Juice Shop, T1190, A03:2021) | `' OR 1=1--` as the login email authenticates as the admin account with no valid password | No control: `VULNERABLE` (authenticated as `admin@juice-sh.op`). A naive SQL-metacharacter filter: `REMEDIATED` (HTTP 403), ordinary logins unaffected. Surprise: a legitimate email containing an apostrophe already fails against the unmodified backend (HTTP 500), and the filter blocks it too, just with a cleaner error |
 | [pt03](items/pt03-exposed-ftp-directory/) Exposed `/ftp/` Directory (Juice Shop, T1083 / T1552.001, A05:2021) | Unauthenticated directory listing exposing a file marked confidential and a KeePass credential database | No control: `VULNERABLE` on all three (listing, confidential doc, `.kdbx`, all HTTP 200, no auth). A default-deny proxy with a one-file allowlist for a document checked to be genuinely public: `REMEDIATED` (403 on the rest), that one legitimate document still served at 200 |
+| [pt04](items/pt04-ssrf-profile-image/) SSRF via Profile Image URL (Juice Shop, T1190, A10:2021) | The server fetches an arbitrary `imageUrl` itself (`User-Agent: node` on the callback, not a browser); confirmed with an out-of-band listener, not inferred from a status code | No control: `VULNERABLE` (attacker-controlled callback hit). A destination-allowlisting proxy standing in for a vetted image-CDN list: `REMEDIATED` (callback never hit), the one allowlisted CDN still reachable |
 
 ## Items
 
@@ -58,9 +59,10 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt01-idor-juice-shop](items/pt01-idor-juice-shop/) | Broken access control / IDOR | Run live, 2026-11-03 |
 | [pt02-sqli-login-bypass](items/pt02-sqli-login-bypass/) | SQL injection login bypass | Run live, 2026-11-03 |
 | [pt03-exposed-ftp-directory](items/pt03-exposed-ftp-directory/) | Security misconfiguration / unauthenticated data exposure | Run live, 2026-11-03 |
+| [pt04-ssrf-profile-image](items/pt04-ssrf-profile-image/) | Server-side request forgery | Run live, 2026-11-03 |
 
 ## Keeping this safe
 
-- No blueprint or config may name a host that isn't `localhost`, `127.0.0.1`, or a Docker Compose service name resolved inside this repo's own compose file. A test enforces this before any replay runs.
+- No blueprint or config may name a host that isn't `localhost`, `127.0.0.1`, `::1`, `host.docker.internal` (Docker's own name for "this machine," used by SSRF items so a container's callback target is still categorically local), or a Docker Compose service name resolved inside this repo's own compose file. A test enforces this before any replay runs, scanning every URL-shaped string in a committed blueprint, not just a single `target.host` field.
 - No live API keys, Jira tokens, or SIEM credentials are stored in this repo. `keys.example.ini` (when added) is the committed template; real values live in `keys.ini`, which is gitignored, or in environment variables.
 - Nothing here generates novel exploit code against a target it hasn't been explicitly pinned to. Blueprints are data, reviewed like any other fixture, not a general-purpose payload generator.
