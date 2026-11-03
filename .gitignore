@@ -6,6 +6,7 @@ venv/
 # local lab state, never committed
 keys.ini
 *.local.json
+scratch/
 
 # scripted/demo runs illustrate a mechanism and are regenerable; they are
 # never evidence, so they don't belong in the committed record
