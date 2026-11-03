@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt01-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "Attacker token read victim's basket (id=25, UserId=46) with no ownership check.",
+  "legitimate_victim_basket_ok": true,
+  "legitimate_attacker_basket_ok": true
+}

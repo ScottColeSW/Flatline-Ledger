@@ -46,6 +46,12 @@ Juice Shop is a vendored lab image; the realistic move when you can't touch a ve
 
 Raw per-run output: [`results/pt01-001-1793732349.json`](results/pt01-001-1793732349.json) (vulnerable), [`results/pt01-001-1793732374.json`](results/pt01-001-1793732374.json) (remediated). Both runs are also in the repo-root hash-chained log; `python ledger.py verify` from the repo root confirms the chain.
 
+## A gap between our proof and Juice Shop's own scoreboard, found and fixed
+
+Scott noticed this item's exploit wasn't showing up as solved on Juice Shop's own scoreboard, unlike pt02, pt03, pt04, and pt07. Traced it: `basketAccessChallenge`'s solve check (`routes/basket.js`) looks the attacker's token up in an in-memory cache, `authenticatedUsers.tokenMap`, populated only by middleware wired to `/rest/user/whoami` and `/profile`, never by `/rest/basket/:id` itself. The exploit genuinely works either way, the data leak is real with or without that lookup succeeding, but if the attacker's token was never used against one of those two routes first, Juice Shop's own tracking never notices.
+
+`scenario.py` now calls `GET /rest/user/whoami` with the attacker's token right after login, before the actual exploit, purely to prime that cache. Confirmed live: with the priming call, `View Basket` flips to `solved: true`; without it, the exact same exploit leaves it `false`. This is the fourth item (after pt04, pt06, and pt08's investigation) where Juice Shop's own check turned out to depend on an incidental implementation detail narrower than the real vulnerability, worth fixing here rather than leaving as a known gap, since it cost one line and no change to what's actually being proven.
+
 ## What this does not show
 
 - One flaw, one endpoint, one vendor image, one run. No adaptive attacker, no variation in how the ownership check could be bypassed (e.g. if the proxy's JWT decoding assumption changes).

