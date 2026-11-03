@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt20-001",
+  "mitre_technique": null,
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 410,
+  "summary": "The 'deprecated' interface is still live and executed logic before responding, HTTP 410 (not 404).",
+  "legitimate_pdf_upload_ok": true,
+  "legitimate_pdf_upload_http_status": 204
+}

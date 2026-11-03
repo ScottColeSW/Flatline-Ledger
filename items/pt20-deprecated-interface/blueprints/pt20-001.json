@@ -1,0 +1,19 @@
+{
+  "vulnerability_id": "pt20-001",
+  "mitre_technique": null,
+  "mitre_technique_note": "ATT&CK describes attacker tradecraft; 'a feature marked deprecated was never actually removed from the running service' is a decommissioning-hygiene gap, not a technique. Same honest gap as pt05 and pt15.",
+  "owasp_category": "A05:2021 - Security Misconfiguration",
+  "cwe": "CWE-16",
+  "cwe_note": "No CWE maps this precisely; CWE-16 (Configuration) is the closest broad parent, same kind of imprecise-but-honest mapping pt15 uses CWE-840 for.",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/file-upload",
+  "description": "The B2B complaint-via-XML/YAML upload path is described by Juice Shop's own challenge catalog as 'a deprecated B2B interface that was not properly shut down.' A true decommissioning would make the route return 404, as if it never existed. Instead it returns HTTP 410 with a 'deprecated for security reasons' message, still executing real logic (file parsing) before saying so, exactly the half-measure pt17 was able to exploit for XXE. Decommissioning on paper is not decommissioning in the running service.",
+  "deprecated_file_extensions": ["xml", "yml", "yaml"],
+  "legitimate_file_extension": "pdf",
+  "expected_exploit_indicator": "An uploaded .xml or .yml file gets a deliberate, logic-executing response (HTTP 410) rather than a plain 404, proving the route is still live",
+  "expected_blocked_signal": [404],
+  "legitimate_check": "A .pdf complaint attachment, the actual still-supported path, must keep getting its normal HTTP 204 response."
+}

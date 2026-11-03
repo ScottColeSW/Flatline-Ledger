@@ -65,6 +65,8 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt16](items/pt16-unauthenticated-product-tampering/) Unauthenticated Product Tampering (Juice Shop, CWE-306, T1565.001, A01:2021) | Found in a comment, not a bug hunt: `server.js` shows the authorization line for `PUT /api/Products/:id` commented out. No login of any kind needed to overwrite any product's public, store-wide content | No control: `VULNERABLE` (overwritten with zero auth, HTTP 200). An auth-enforcing proxy: `REMEDIATED` (HTTP 401), real admin edits unaffected. Scenario restores the real product afterward every run |
 | [pt17](items/pt17-xxe-file-disclosure/) XXE File Disclosure via Unauthenticated Upload (Juice Shop, CWE-611, T1190/T1005, A05:2021) | `POST /file-upload`, no auth required, parses XML with external entities enabled. A `SYSTEM "file:///etc/passwd"` entity resolved and leaked the real file inside the endpoint's own error message | No control: `VULNERABLE` (`/etc/passwd` disclosed). A DOCTYPE-signature-rejecting proxy: `REMEDIATED` (HTTP 403), benign uploads unaffected. The DoS variant was deliberately never attempted, see item for why |
 | [pt18](items/pt18-unsigned-jwt/) Unsigned JWT ("alg": "none") (Juice Shop, CWE-347, T1606.001, A02:2021) | pt06's sibling, same unrestricted `verify()` call, a simpler forgery: a token with no signature at all (`alg: "none"`) authenticates as admin | No control: `VULNERABLE` (HTTP 200, no signature needed). pt06's existing proxy, unmodified: `REMEDIATED` (401), confirming one fix covers both forgery variants |
+| [pt19](items/pt19-exposed-metrics/) Exposed Metrics Endpoint (Juice Shop, CWE-200, T1592.002, A05:2021) | Started as an incidental scoreboard flip from earlier curl traffic, formalized on request: `GET /metrics` leaks host fingerprinting and business metrics (total users, total wallet balance) with zero auth | No control: `VULNERABLE` (all markers present). A shared-secret proxy: `REMEDIATED` (401), a correctly-credentialed scrape unaffected |
+| [pt20](items/pt20-deprecated-interface/) Deprecated Interface Not Properly Shut Down (Juice Shop, CWE-16, A05:2021) | Same route pt17 exploited, an earlier finding: a benign `.xml` upload gets `HTTP 410` with a message, proving the route still runs real logic instead of returning a plain 404 | No control: `VULNERABLE` (410, logic ran first). A true-decommissioning proxy: `REMEDIATED` (404, as if the route never existed), the still-supported `.pdf` path unaffected |
 
 ## Items
 
@@ -88,6 +90,8 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt16-unauthenticated-product-tampering](items/pt16-unauthenticated-product-tampering/) | Missing authentication (public content tampering) | Run live, 2026-11-03 |
 | [pt17-xxe-file-disclosure](items/pt17-xxe-file-disclosure/) | XML external entity injection | Run live, 2026-11-03 |
 | [pt18-unsigned-jwt](items/pt18-unsigned-jwt/) | Cryptographic failure / authentication bypass | Run live, 2026-11-03 |
+| [pt19-exposed-metrics](items/pt19-exposed-metrics/) | Security misconfiguration / sensitive data exposure | Run live, 2026-11-03 |
+| [pt20-deprecated-interface](items/pt20-deprecated-interface/) | Security misconfiguration / improper decommissioning | Run live, 2026-11-03 |
 
 ## Keeping this safe
 

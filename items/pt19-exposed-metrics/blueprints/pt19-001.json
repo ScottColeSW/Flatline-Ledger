@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt19-001",
+  "mitre_technique": "T1592.002",
+  "owasp_category": "A05:2021 - Security Misconfiguration",
+  "cwe": "CWE-200",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/metrics",
+  "description": "server.js's own comment names it directly: '// vuln-code-snippet vuln-line exposedMetricsChallenge' sits right on 'app.get(\\'/metrics\\', metrics.serveMetrics())', no auth middleware at all. The response is a full Prometheus scrape: Node.js version, process memory and CPU, open file descriptors, plus business metrics most apps would never expose publicly (total registered users, total wallet balance across every account, per-type social-interaction counts). Juice Shop's own solve condition is just 'a non-Prometheus User-Agent reached it at all.'",
+  "sensitive_metric_markers": ["juiceshop_users_registered_total", "juiceshop_wallet_balance_total", "nodejs_version_info"],
+  "expected_exploit_indicator": "HTTP 200 with the response containing business metrics (registered user count, total wallet balance) and host fingerprinting data (Node.js version), with no authentication at all",
+  "expected_blocked_signal": [401, 403],
+  "legitimate_check": "A request carrying the correct shared secret, standing in for a real monitoring scraper's own credential, must still succeed."
+}

@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt20-001",
+  "mitre_technique": null,
+  "target": "http://localhost:3021",
+  "status": "REMEDIATED",
+  "exploit_http_status": 404,
+  "summary": "The deprecated interface now returns 404, as if it never existed.",
+  "legitimate_pdf_upload_ok": true,
+  "legitimate_pdf_upload_http_status": 204
+}

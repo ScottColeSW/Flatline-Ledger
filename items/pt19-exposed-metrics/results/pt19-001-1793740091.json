@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt19-001",
+  "mitre_technique": "T1592.002",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "All 3 sensitive metric markers present with no authentication at all.",
+  "legitimate_scrape_ok": true,
+  "legitimate_scrape_http_status": 200
+}
