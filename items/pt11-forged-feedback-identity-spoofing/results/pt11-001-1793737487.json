@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt11-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 201,
+  "summary": "Attacker (id=84) authored feedback attributed to the victim (id=85) with no identity check.",
+  "legitimate_self_attribution_ok": true,
+  "legitimate_self_attribution_http_status": 201
+}

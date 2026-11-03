@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt11-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3013",
+  "status": "REMEDIATED",
+  "exploit_http_status": 201,
+  "summary": "Request succeeded (HTTP 201), but UserId was silently corrected to the real caller's id (86), not the claimed victim (87).",
+  "legitimate_self_attribution_ok": true,
+  "legitimate_self_attribution_http_status": 201
+}

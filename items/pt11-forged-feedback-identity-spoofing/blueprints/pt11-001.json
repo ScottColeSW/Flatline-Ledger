@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt11-001",
+  "mitre_technique": "T1565.001",
+  "mitre_technique_secondary": "T1036",
+  "owasp_category": "A04:2021 - Insecure Design",
+  "cwe": "CWE-345",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/api/Feedbacks",
+  "description": "POST /api/Feedbacks accepts a client-supplied UserId field and trusts it outright, never checking it against the authenticated caller's own id. Any logged-in account can author feedback that appears to come from a different, real account. Confirmed by Juice Shop's own 'Forged Feedback' scoreboard entry, which solves on exactly this condition (UserId present and different from the caller's real id).",
+  "expected_exploit_indicator": "HTTP 201 with the created row's UserId equal to a victim account's id, submitted using the attacker's own auth token",
+  "expected_blocked_signal": [400, 403],
+  "legitimate_check": "An account submitting feedback attributed to itself (UserId == its own id) must keep working in every condition."
+}

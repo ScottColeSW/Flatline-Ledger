@@ -57,6 +57,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt08](items/pt08-missing-function-level-access-control/) Missing Function-Level Access Control (Juice Shop, CWE-862, T1087.001, A01:2021) | Found by checking a layer the scoreboard's own test doesn't reach: the "Admin Section" frontend guard is actually intact, but `GET /api/Users` behind it has no role check at all, any customer lists all 39 accounts and roles | No control: `VULNERABLE` (customer sees the full admin-only directory). A role-pinning proxy: `REMEDIATED` (HTTP 403), real admin access unaffected |
 | [pt09](items/pt09-unauthorized-feedback-deletion/) Unauthorized Feedback Deletion (Juice Shop, CWE-862, T1485, A01:2021) | Found by reading an odd scoreboard solve condition literally (5-star feedback count must hit zero): any authenticated account can delete any other account's feedback by id | No control: `VULNERABLE` (attacker deletes victim's feedback, HTTP 200). An ownership-check proxy: `REMEDIATED` (HTTP 403), self-delete unaffected |
 | [pt10](items/pt10-unsafe-config-reopens-sanitization/) Unsafe Config Reopens XSS + NoSQL Injection (Juice Shop, CWE-943/CWE-79, T1190, A05:2021) | A vendor-shipped config (`NODE_ENV=unsafe`) disables the sanitization behind `trackOrder`'s MongoDB `$where` clause, reopening reflected XSS **and** a NoSQL injection that dumped another account's order history | Default Docker config: `REMEDIATED` (already safe by default). `NODE_ENV=unsafe`: `VULNERABLE` on both, confirmed on a second container's own scoreboard |
+| [pt11](items/pt11-forged-feedback-identity-spoofing/) Forged Feedback / Identity Spoofing (Juice Shop, CWE-345, T1565.001, A04:2021) | `POST /api/Feedbacks` trusts a client-supplied `UserId` outright; pt09's counterpart on deletion, this time on creation | No control: `VULNERABLE` (row saved under a victim's real id). An identity-pinning proxy that rewrites, not rejects: `REMEDIATED`, same HTTP 201, correct attribution, self-attribution unaffected |
 
 ## Items
 
@@ -72,6 +73,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt08-missing-function-level-access-control](items/pt08-missing-function-level-access-control/) | Broken access control / missing authorization | Run live, 2026-11-03 |
 | [pt09-unauthorized-feedback-deletion](items/pt09-unauthorized-feedback-deletion/) | Broken access control / missing authorization (delete) | Run live, 2026-11-03 |
 | [pt10-unsafe-config-reopens-sanitization](items/pt10-unsafe-config-reopens-sanitization/) | Security misconfiguration / reflected XSS + NoSQL injection | Run live, 2026-11-03 |
+| [pt11-forged-feedback-identity-spoofing](items/pt11-forged-feedback-identity-spoofing/) | Insecure design / identity spoofing (create) | Run live, 2026-11-03 |
 
 ## Keeping this safe
 
