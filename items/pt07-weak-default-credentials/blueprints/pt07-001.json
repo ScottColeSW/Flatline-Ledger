@@ -1,0 +1,20 @@
+{
+  "vulnerability_id": "pt07-001",
+  "mitre_technique": "T1078.001",
+  "owasp_category": "A07:2021 - Identification and Authentication Failures",
+  "cwe": "CWE-521",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/user/login",
+  "description": "The real admin account (admin@juice-sh.op) accepts the password 'admin123'. This is a genuine, live login against the real account, not a forged token or injection bypass, confirmed by Juice Shop's own scoreboard flipping 'Password Strength' to solved on the first attempt.",
+  "attack_credentials": {
+    "email": "admin@juice-sh.op",
+    "password": "admin123"
+  },
+  "password_blocklist": ["admin123", "password", "123456", "letmein", "qwerty"],
+  "expected_exploit_indicator": "HTTP 200 with a valid authentication.token whose decoded role is admin",
+  "expected_blocked_signal": [400, 401, 403],
+  "legitimate_check": "A freshly registered account logging in with its own, non-blocklisted password must still succeed in every condition."
+}

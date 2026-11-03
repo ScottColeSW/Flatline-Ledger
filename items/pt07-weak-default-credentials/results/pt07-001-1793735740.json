@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt07-001",
+  "mitre_technique": "T1078.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "Logged in as the real admin account with the weak default password 'admin123'.",
+  "legitimate_login_ok": true,
+  "legitimate_login_http_status": 200
+}
