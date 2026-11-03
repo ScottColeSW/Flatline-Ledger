@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt06-001",
+  "mitre_technique": "T1606.001",
+  "target": "http://localhost:3008",
+  "status": "REMEDIATED",
+  "exploit_http_status": 401,
+  "summary": "Forged token blocked with HTTP 401.",
+  "legitimate_real_session_ok": true,
+  "legitimate_real_session_http_status": 200
+}

@@ -52,6 +52,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt03](items/pt03-exposed-ftp-directory/) Exposed `/ftp/` Directory (Juice Shop, T1083 / T1552.001, A05:2021) | Unauthenticated directory listing exposing a file marked confidential and a KeePass credential database | No control: `VULNERABLE` on all three (listing, confidential doc, `.kdbx`, all HTTP 200, no auth). A default-deny proxy with a one-file allowlist for a document checked to be genuinely public: `REMEDIATED` (403 on the rest), that one legitimate document still served at 200 |
 | [pt04](items/pt04-ssrf-profile-image/) SSRF via Profile Image URL (Juice Shop, T1190, A10:2021) | **pt04-001**: the server fetches an arbitrary `imageUrl` itself (`User-Agent: node` on the callback, not a browser), confirmed with an out-of-band listener. **pt04-002**, found while chasing why Juice Shop's own scoreboard didn't flag it: the same SSRF also pivots to an internal-only endpoint, a narrower but more severe variant | Both: `VULNERABLE` pre-fix. The one destination-allowlisting proxy built for pt04-001 generalizes to pt04-002 without any new rule: `REMEDIATED` on both, the one allowlisted CDN still reachable |
 | [pt05](items/pt05-vulnerable-dependency/) Vulnerable Dependency (Juice Shop, CWE-1104, A06:2021) | `jsonwebtoken@0.4.0`, as actually installed (resolved from the lockfile, not guessed from a version range), carries `CVE-2015-9235` (CRITICAL) among 4 known advisories; 17 of 69 direct dependencies have at least one | SCA, not DAST, by design: no exploit attempted, see item README for why. `--mode current`: `VULNERABLE`. `--mode proposed-fix`: the current published version (`9.0.3`) checked clean, `REMEDIATED`, without installing it into the running container |
+| [pt06](items/pt06-jwt-algorithm-confusion/) JWT Algorithm Confusion (Juice Shop, CWE-347, T1606.001, A02:2021) | Closes the loop with pt05: the real verification code calls `jsonwebtoken.verify()` with no algorithm restriction, so a token forged as HS256 using the RS256 **public** key as the HMAC secret authenticates as admin with zero login | No control: `VULNERABLE` (forged admin token accepted, HTTP 200). An algorithm-pinning proxy: `REMEDIATED` (HTTP 401), a real RS256 session unaffected |
 
 ## Items
 
@@ -62,6 +63,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt03-exposed-ftp-directory](items/pt03-exposed-ftp-directory/) | Security misconfiguration / unauthenticated data exposure | Run live, 2026-11-03 |
 | [pt04-ssrf-profile-image](items/pt04-ssrf-profile-image/) | Server-side request forgery | Run live, 2026-11-03 |
 | [pt05-vulnerable-dependency](items/pt05-vulnerable-dependency/) | Vulnerable and outdated components (SCA) | Run live, 2026-11-03 |
+| [pt06-jwt-algorithm-confusion](items/pt06-jwt-algorithm-confusion/) | Cryptographic failure / authentication bypass | Run live, 2026-11-03 |
 
 ## Keeping this safe
 
