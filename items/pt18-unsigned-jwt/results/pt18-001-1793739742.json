@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt18-001",
+  "mitre_technique": "T1606.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "Unsigned ('alg: none') token authenticated as admin@juice-sh.op with no signature at all.",
+  "legitimate_real_session_ok": true,
+  "legitimate_real_session_http_status": 200
+}

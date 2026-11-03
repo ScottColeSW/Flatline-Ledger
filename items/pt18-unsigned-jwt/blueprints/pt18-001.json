@@ -1,0 +1,20 @@
+{
+  "vulnerability_id": "pt18-001",
+  "mitre_technique": "T1606.001",
+  "owasp_category": "A02:2021 - Cryptographic Failures",
+  "cwe": "CWE-347",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/rest/user/whoami",
+  "description": "The sibling vulnerability to pt06, same root cause (jsonwebtoken.verify() with no algorithms restriction), a different forged algorithm: a token with alg: 'none' and no signature segment at all authenticates as admin. Deliberately does not build a new proxy; pt06's algorithm-allowlist proxy already pins to RS256, and none is not RS256, so it should already block this without any new code. That claim is checked here, not assumed.",
+  "forged_claims": {
+    "id": 1,
+    "email": "admin@juice-sh.op",
+    "role": "admin"
+  },
+  "expected_exploit_indicator": "GET /rest/user/whoami with the unsigned token as the 'token' cookie returns HTTP 200 and the admin account's own data, with no signature at all",
+  "expected_blocked_signal": [401, 403],
+  "legitimate_check": "A real session token obtained through an actual login (RS256-signed, as the app always signs) must still be accepted in every condition."
+}
