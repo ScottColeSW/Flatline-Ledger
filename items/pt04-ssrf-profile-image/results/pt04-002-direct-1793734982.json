@@ -1,0 +1,8 @@
+{
+  "vulnerability_id": "pt04-002",
+  "mode": "direct",
+  "status": "VULNERABLE",
+  "pivot_request_http_status": 200,
+  "juice_shop_scoreboard_solved": true,
+  "note": "scoreboard_solved is informational only after the first run; the app's flag is one-way for the container's life"
+}

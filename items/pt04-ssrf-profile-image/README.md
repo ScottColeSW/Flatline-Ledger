@@ -50,9 +50,31 @@ The fetch happens unconditionally once logged in; this regex check is a side cha
 
 Confirmed by hand, once: pointing `imageUrl` at `http://localhost:3000/solve/challenges/server-side?key=tRy_H4rd3r_n0thIng_iS_Imp0ssibl3` (a self-referential SSRF) flips `GET /api/Challenges/?name=SSRF` to `"solved": true`. This corroborates the finding, it doesn't supersede it: the out-of-band callback this item's `scenario.py` uses proves the more general and more serious claim (arbitrary destination, not just the app's own verification route), which is also why it's the one the automated scenario keeps, not this narrower one.
 
-This corroboration step is **not** wired into `scenario.py`, on purpose: Juice Shop's solved flag is one-way for the life of the container, so re-running it against the same running instance would report "corroborated" on every future run regardless of whether that run's fix actually worked, a repeatable check that always passes isn't a check. Recorded here as a one-time, by-hand finding instead.
+This turned into a second, separate, tracked finding (**pt04-002**, below) rather than staying a one-off note, since the narrower self-referential path and the broader external-callback path are genuinely different claims worth showing side by side.
 
 (For [pt05](../pt05-vulnerable-dependency/): nothing comparable applies, it never sends the running app any traffic at all, which is the point, not a gap.)
+
+## pt04-002: the same bug, a more severe pivot
+
+pt04-001 (above) proves the general claim: an arbitrary external destination is reachable. **pt04-002** proves a narrower but more severe one: the SSRF can also pivot to an **internal-only** endpoint, Juice Shop's own self-verification route, that a normal external client was never meant to reach directly at all.
+
+`scenario_internal_pivot.py` has an asymmetry the other scenarios don't, stated in its own docstring and worth repeating here: Juice Shop's "solved" flag is one-way for the container's life, so it cannot be used as a repeatable pre/post regression signal. The two modes are deliberately asymmetric because of this:
+
+- `--mode direct` (pre-fix): fires the self-referential payload at the raw backend and reports the app's own scoreboard flag, labeled informational after the first run.
+- `--mode proxy` (post-fix): fires the same payload at the pt04-001 proxy and checks only the HTTP status it returns, no dependency on the app's flag at all, fully reproducible every run.
+
+```bash
+python items/pt04-ssrf-profile-image/scenario_internal_pivot.py --mode direct   # pre-fix, direct to :3001
+python items/pt04-ssrf-profile-image/proxy.py                                   # separate shell, same proxy as pt04-001
+python items/pt04-ssrf-profile-image/scenario_internal_pivot.py --mode proxy    # post-fix, through the proxy
+```
+
+| Finding | Target | Pre-fix | Post-fix |
+| --- | --- | --- | --- |
+| pt04-001: arbitrary external destination | Attacker's own callback host | `VULNERABLE`, callback hit | `REMEDIATED`, HTTP 403 |
+| pt04-002: internal-only self-verification route | `localhost:3000/solve/challenges/server-side` | `VULNERABLE`, HTTP 200, app's own scoreboard confirms it | `REMEDIATED`, HTTP 403, same proxy, no new rule needed |
+
+The one fix built for pt04-001 generalizes to pt04-002 without modification: the destination allowlist blocks `localhost:3000` the same way it blocks the attacker's callback host, because neither is the one allowlisted CDN. That's worth stating plainly: a destination allowlist is a stronger fix than a pattern-based SSRF filter would have been, since it didn't need to separately anticipate "the app's own loopback address" as a case.
 
 ## What this does not show
 

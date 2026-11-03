@@ -1,0 +1,6 @@
+{
+  "vulnerability_id": "pt04-002",
+  "mode": "proxy",
+  "status": "REMEDIATED",
+  "pivot_request_http_status": 403
+}

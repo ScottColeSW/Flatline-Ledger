@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt04-002",
+  "mitre_technique": "T1190",
+  "owasp_category": "A10:2021 - Server-Side Request Forgery",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/profile/image/url",
+  "description": "A separate, more severe variant of pt04-001's finding: the same SSRF can pivot to an internal-only endpoint the app exposes to itself, not just to an attacker-controlled external host. Confirmed by using the SSRF to reach the app's own self-verification route, which Juice Shop never intends a normal client to reach directly from outside.",
+  "self_target": "http://localhost:3000/solve/challenges/server-side?key=tRy_H4rd3r_n0thIng_iS_Imp0ssibl3",
+  "proxy_destination_checked": "localhost:3000",
+  "relationship_to_pt04_001": "pt04-001's scenario.py proves the broader, more general claim (arbitrary external destination reachable) with a reproducible oracle. This item proves the narrower-but-more-severe claim (internal-endpoint pivot) using the app's own one-way challenge flag as the signal for the pre-fix condition, and the proxy's own HTTP status for the post-fix condition, since the app's flag can't be used as a repeatable regression check (see scenario.py's docstring).",
+  "expected_pre_fix_indicator": "HTTP response from the self-referential request is not an error, and the app's own /api/Challenges?name=SSRF reports solved:true (informational only after the first run, since the flag is one-way)",
+  "expected_post_fix_indicator": "The destination-allowlisting proxy from pt04-001 returns 403 for this destination too, with no dependency on the app's own flag"
+}
