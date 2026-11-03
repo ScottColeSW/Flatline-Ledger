@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt08-001",
+  "mitre_technique": "T1087.001",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-862",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/api/Users",
+  "description": "GET /api/Users, the full user directory, requires a valid auth token but never checks its role. Any authenticated customer, sent via the Authorization header rather than the cookie, gets the identical response an admin would: every user's id, email, role, and deluxeToken. No password hash is exposed, but full account enumeration, including which real email addresses hold admin, is. Found while investigating why Juice Shop's own 'Admin Section' scoreboard marker (a frontend-only pixel-tracking check, see README) didn't flip for a plain customer: the frontend route guard turned out to be intact, this backend API's missing role check is a separate, more serious bug.",
+  "attack_header": "Authorization: Bearer <any authenticated customer's token>",
+  "expected_exploit_indicator": "HTTP 200 with the full user list, identical in size and content whether the token belongs to a customer or an admin",
+  "expected_blocked_signal": [401, 403],
+  "legitimate_check": "The real admin account must still be able to list users in every condition."
+}

@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt08-001",
+  "mitre_technique": "T1087.001",
+  "target": "http://localhost:3010",
+  "status": "REMEDIATED",
+  "exploit_http_status": 403,
+  "summary": "Blocked with HTTP 403.",
+  "user_count_exposed_to_customer": 0,
+  "legitimate_admin_access_ok": true,
+  "legitimate_admin_access_http_status": 200
+}

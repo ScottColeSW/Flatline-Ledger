@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt08-001",
+  "mitre_technique": "T1087.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "A plain customer listed 39 user accounts via the admin-only directory, including role and email for each.",
+  "user_count_exposed_to_customer": 39,
+  "legitimate_admin_access_ok": true,
+  "legitimate_admin_access_http_status": 200
+}

@@ -54,6 +54,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt05](items/pt05-vulnerable-dependency/) Vulnerable Dependency (Juice Shop, CWE-1104, A06:2021) | `jsonwebtoken@0.4.0`, as actually installed (resolved from the lockfile, not guessed from a version range), carries `CVE-2015-9235` (CRITICAL) among 4 known advisories; 17 of 69 direct dependencies have at least one | SCA, not DAST, by design: no exploit attempted, see item README for why. `--mode current`: `VULNERABLE`. `--mode proposed-fix`: the current published version (`9.0.3`) checked clean, `REMEDIATED`, without installing it into the running container |
 | [pt06](items/pt06-jwt-algorithm-confusion/) JWT Algorithm Confusion (Juice Shop, CWE-347, T1606.001, A02:2021) | Closes the loop with pt05: the real verification code calls `jsonwebtoken.verify()` with no algorithm restriction, so a token forged as HS256 using the RS256 **public** key as the HMAC secret authenticates as admin with zero login | No control: `VULNERABLE` (forged admin token accepted, HTTP 200). An algorithm-pinning proxy: `REMEDIATED` (HTTP 401), a real RS256 session unaffected |
 | [pt07](items/pt07-weak-default-credentials/) Weak Default Admin Credentials (Juice Shop, CWE-521, T1078.001, A07:2021) | No injection, no forgery: the real admin account logs in with `admin123`. Juice Shop's own scoreboard flipped on the first try, no narrower intended-solve path to chase this time | No control: `VULNERABLE` (real admin session, HTTP 200). A password-blocklist proxy: `REMEDIATED` (HTTP 401), a legitimate account's own password unaffected |
+| [pt08](items/pt08-missing-function-level-access-control/) Missing Function-Level Access Control (Juice Shop, CWE-862, T1087.001, A01:2021) | Found by checking a layer the scoreboard's own test doesn't reach: the "Admin Section" frontend guard is actually intact, but `GET /api/Users` behind it has no role check at all, any customer lists all 39 accounts and roles | No control: `VULNERABLE` (customer sees the full admin-only directory). A role-pinning proxy: `REMEDIATED` (HTTP 403), real admin access unaffected |
 
 ## Items
 
@@ -66,6 +67,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt05-vulnerable-dependency](items/pt05-vulnerable-dependency/) | Vulnerable and outdated components (SCA) | Run live, 2026-11-03 |
 | [pt06-jwt-algorithm-confusion](items/pt06-jwt-algorithm-confusion/) | Cryptographic failure / authentication bypass | Run live, 2026-11-03 |
 | [pt07-weak-default-credentials](items/pt07-weak-default-credentials/) | Weak/default authentication credentials | Run live, 2026-11-03 |
+| [pt08-missing-function-level-access-control](items/pt08-missing-function-level-access-control/) | Broken access control / missing authorization | Run live, 2026-11-03 |
 
 ## Keeping this safe
 
