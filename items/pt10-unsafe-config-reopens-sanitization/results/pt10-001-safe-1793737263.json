@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt10-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3001",
+  "status": "REMEDIATED",
+  "summary": "XSS payload stripped to alphanumerics; injection payload never broke out of the $where clause.",
+  "xss_reflected_raw": false,
+  "nosql_injection_orders_returned": 1,
+  "legitimate_tracking_ok": true
+}

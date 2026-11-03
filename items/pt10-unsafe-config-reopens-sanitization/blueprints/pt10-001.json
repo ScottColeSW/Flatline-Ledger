@@ -1,0 +1,23 @@
+{
+  "vulnerability_id": "pt10-001",
+  "mitre_technique": "T1190",
+  "owasp_category": "A05:2021 - Security Misconfiguration",
+  "cwe_primary": "CWE-943",
+  "cwe_secondary": "CWE-79",
+  "safe_target": {
+    "host": "http://localhost:3001",
+    "config": "default (Docker's own disabledEnv guard active)"
+  },
+  "unsafe_target": {
+    "host": "http://localhost:3012",
+    "config": "NODE_ENV=unsafe, a config file Juice Shop itself ships (config/unsafe.yml)"
+  },
+  "method": "GET",
+  "endpoint": "/rest/track-order/{id}",
+  "description": "trackOrder.js builds a MongoDB $where clause by string-interpolating the id parameter: `this.orderId === '${id}'`. When the 'Reflected XSS' challenge is enabled, the id is truncated but never sanitized; when it's disabled (the default inside Docker), a regex strips the id to [\\w-]+ first, which also happens to block the NoSQL injection in the same clause. The challenge is vendor-tagged 'Danger Zone' and disabled by default in Docker/Heroku/Gitpod. Juice Shop itself ships a config file (unsafe.yml) that disables this safety switch entirely, by name, activated with nothing more than NODE_ENV=unsafe.",
+  "xss_payload": "<iframe src=\"javascript:alert(`xss`)\">",
+  "nosql_injection_payload": "' || '1'=='1",
+  "expected_safe_behavior": "The XSS payload is stripped to alphanumerics; the injection payload never breaks out of the $where string literal",
+  "expected_unsafe_behavior": "The XSS payload is reflected raw and unescaped; the injection payload returns every order in the database, not just the one requested, including other users'",
+  "legitimate_check": "A real orderId must still be trackable in both configurations."
+}

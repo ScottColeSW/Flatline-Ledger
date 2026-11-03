@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt10-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3012",
+  "status": "VULNERABLE",
+  "summary": "XSS payload reflected raw and unescaped; NoSQL injection returned 3 orders instead of one.",
+  "xss_reflected_raw": true,
+  "nosql_injection_orders_returned": 3,
+  "legitimate_tracking_ok": true
+}
