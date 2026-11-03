@@ -1,0 +1,12 @@
+{
+  "vulnerability_id": "pt03-001",
+  "mitre_technique": "T1083",
+  "target": "http://localhost:3004",
+  "status": "REMEDIATED",
+  "directory_listing_http_status": 403,
+  "confidential_file_http_status": 403,
+  "credential_store_http_status": 403,
+  "summary": "Listing and all checked files blocked without authentication.",
+  "legitimate_legal_doc_ok": true,
+  "legitimate_legal_doc_http_status": 200
+}

@@ -1,0 +1,23 @@
+{
+  "vulnerability_id": "pt03-001",
+  "mitre_technique": "T1083",
+  "mitre_technique_secondary": "T1552.001",
+  "owasp_category": "A05:2021 - Security Misconfiguration",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/ftp/",
+  "description": "The /ftp/ path serves an unauthenticated directory listing (serve-index) of a legacy file drop, including files explicitly marked confidential and a KeePass credential database (incident-support.kdbx), with no login required at all.",
+  "attack_checks": {
+    "directory_listing": "/ftp/",
+    "confidential_file": "/ftp/acquisitions.md",
+    "credential_store_file": "/ftp/incident-support.kdbx"
+  },
+  "expected_exploit_indicator": "HTTP 200 on the directory listing and/or on a file whose own content says it is confidential, with no Authorization header sent at all",
+  "expected_blocked_signal": [401, 403, 404],
+  "legitimate_check": {
+    "_comment": "legal.md has no confidential marker and reads like a genuine public terms/legal document. A fix that blocks the whole /ftp/ path indiscriminately would also take this down, which should be scored as a cost, not assumed away.",
+    "path": "/ftp/legal.md"
+  }
+}

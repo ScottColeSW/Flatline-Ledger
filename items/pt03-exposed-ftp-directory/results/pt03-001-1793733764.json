@@ -1,0 +1,12 @@
+{
+  "vulnerability_id": "pt03-001",
+  "mitre_technique": "T1083",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "directory_listing_http_status": 200,
+  "confidential_file_http_status": 200,
+  "credential_store_http_status": 200,
+  "summary": "Exposed with no authentication: directory listing, confidential-marked file, credential store file (3246 bytes).",
+  "legitimate_legal_doc_ok": true,
+  "legitimate_legal_doc_http_status": 200
+}
