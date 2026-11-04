@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt32-001",
+  "mitre_technique": null,
+  "mitre_technique_note": "This is a cryptographic-design/business-logic flaw (a reversible encoding used where a keyed signature belongs), not attacker tradecraft against an enterprise network; ATT&CK has no clean mapping for 'forge a promotional discount code,' same honest gap pt15 documents for a different payment-bypass flaw.",
+  "owasp_category": "A02:2021 - Cryptographic Failures",
+  "cwe": "CWE-345",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "PUT",
+  "endpoint": "/rest/basket/{basket_id}/coupon/{coupon}",
+  "description": "lib/insecurity.ts's generateCoupon builds every coupon as z85.encode(toMMMYY(date) + '-' + discount), and discountFromCoupon reverses it with z85.decode and a month/year string match. Z85 is a reversible, publicly documented encoding (RFC-style, the ZeroMQ Base85 variant), not encryption and not a keyed signature; there is no server-side secret anywhere in the scheme. Anyone can compute a valid coupon for any discount offline, with no account, no server interaction, and no brute force, just the current month and year in MMMYY form and the public z85 alphabet. A forged coupon for 90% off, built entirely client-side, was applied to a basket and used to complete a real checkout.",
+  "expected_exploit_indicator": "A coupon string computed offline from only the current month/year and a chosen discount percentage is accepted by the server and reduces an order's total by that amount",
+  "expected_blocked_signal": "A coupon that does not match a server-recorded code issued through the real promotional flow is rejected",
+  "legitimate_check": "A real, server-issued coupon (or no coupon at all) still applies correctly and checkout still succeeds."
+}
