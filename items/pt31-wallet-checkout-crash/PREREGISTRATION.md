@@ -38,4 +38,10 @@ Checked `data/static/challenges.yml` for anything matching wallet or checkout cr
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. One basket item, no delivery method, a $0 wallet, `paymentId: "wallet"`: the checkout returned `500`, and the server was unreachable on a follow-up request one second later. Restarted (`docker start flatline-juice-shop-unsafe`) and verified healthy before the next run.
+- Post-fix (through a proxy that pre-checks the caller's own basket total against their own wallet balance): `REMEDIATED`. The same checkout was rejected `402` before reaching the backend; the server stayed reachable throughout.
+- Legitimate check: a separate account with a card-funded $50 wallet balance, checking out a $1.99 item, succeeded normally (`200`) in both conditions.
+
+Raw results in `results/pt31-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).
