@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt27-001",
+  "mitre_technique": "T1499.004",
+  "owasp_category": "A08:2021 - Software and Data Integrity Failures",
+  "cwe": "CWE-502",
+  "target": {
+    "host": "http://localhost:3012"
+  },
+  "method": "POST",
+  "endpoint": "/file-upload",
+  "description": "routes/fileUpload.ts's handleYamlUpload accepts a .yml/.yaml complaint attachment from anyone, unauthenticated, and deserializes it with js-yaml's yaml.load() inside a 2-second vm sandbox. The per-call timeout caps a single request's cost, but nothing limits how many such requests one caller can fire concurrently. A classic billion-laughs YAML (nested anchor/alias expansion) sent five times in parallel from one script measurably stalls the whole server: an unrelated GET to the product search endpoint went from 0.17s at rest to 9.9s while the bombs were parsing, a real, shared-event-loop denial of service, not just an isolated slow request. Juice Shop's own catalog does track a narrower slice of this (yamlBombChallenge, category 'Insecure Deserialization', flips on a single successful 2-second timeout), but has no challenge for the concurrent-request amplification that turns a capped single-request cost into a real service outage.",
+  "expected_exploit_indicator": "An unrelated legitimate request's response time increases by an order of magnitude or more while several YAML-bomb uploads are being parsed concurrently",
+  "expected_blocked_signal": "After a small number of .yml/.yaml uploads from the same caller in a short window, further ones are refused before reaching the backend parser, and an unrelated request's response time stays close to its unloaded baseline",
+  "legitimate_check": "A normal complaint upload (a plain .pdf, no YAML involved) and ordinary API traffic are not slowed or blocked by the control."
+}
