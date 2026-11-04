@@ -1,0 +1,12 @@
+{
+  "vulnerability_id": "pt34-001",
+  "mitre_technique": "T1005",
+  "target": "http://localhost:3035",
+  "status": "REMEDIATED",
+  "egg_status": 403,
+  "egg_bypassed": false,
+  "bak_status": 403,
+  "bak_bypassed": false,
+  "summary": "Both null-byte requests were rejected (HTTP 403): the extension check now runs against the truncated filename, not the raw one.",
+  "legitimate_real_md_download_ok": true
+}

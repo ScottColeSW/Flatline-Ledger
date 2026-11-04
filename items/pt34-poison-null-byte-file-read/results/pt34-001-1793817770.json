@@ -1,0 +1,12 @@
+{
+  "vulnerability_id": "pt34-001",
+  "mitre_technique": "T1005",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "egg_status": 200,
+  "egg_bypassed": true,
+  "bak_status": 200,
+  "bak_bypassed": true,
+  "summary": "Both a hidden easter-egg file and an unrelated backup file were served via the null-byte extension bypass, confirming this is a general file-read primitive, not a one-off.",
+  "legitimate_real_md_download_ok": true
+}

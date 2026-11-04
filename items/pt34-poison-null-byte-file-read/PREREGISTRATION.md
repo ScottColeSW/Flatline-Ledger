@@ -23,4 +23,14 @@ This serves as this repo's Easter Egg item too, Scott's one ask for something "f
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. Both `GET /ftp/eastere.gg%2500.md` and `GET /ftp/package.json.bak%2500.md` returned `200` with the real target file's content.
+- Post-fix (through a proxy checking the extension against the truncated filename): `REMEDIATED`. Both came back `403`.
+- Legitimate check: `GET /ftp/legal.md` (a real `.md` file, no null byte) succeeded in both conditions.
+
+## Checked the scoreboard
+
+`easterEggLevelOneChallenge`, `nullByteChallenge`, and `forgottenDevBackupChallenge` all flipped solved, from the `eastere.gg` and `package.json.bak` requests respectively. `forgottenBackupChallenge` and `misplacedSignatureFileChallenge` stayed unsolved; each requires the same technique against its own specific filename (`coupons_2013.md.bak`, `suspicious_errors.yml`), neither of which this item targeted, to keep the proof focused on two files. The easter-egg content itself was a real easter egg: a short joke message from the Juice Shop developers, then a base64-encoded hint pointing toward `easterEggLevelTwoChallenge` ("Nested Easter Egg"), left unsolved here, out of scope for this item.
+
+Raw results in `results/pt34-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).
