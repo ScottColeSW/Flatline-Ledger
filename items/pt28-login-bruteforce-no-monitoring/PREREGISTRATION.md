@@ -22,6 +22,10 @@ Fifteen wrong-password attempts in a row against a real test account, timed back
 - Post-fix (through a proxy logging failed attempts per account and locking out further ones after 5 in a 60s window): `REMEDIATED`. Attempts 1-5 answered `401` and were logged; attempts 6-15 answered `429` before reaching the backend at all, including the final attempt with the correct password, the account was locked out by the time it was tried, which is the intended behavior of a real lockout control, not a broken legitimate case.
 - Legitimate check: a separate, freshly registered account with no prior failures logged in successfully on its very first attempt, in both conditions.
 
+## Not in Juice Shop's own challenge catalog, fourth item now
+
+Checked the scoreboard before and after this run: nothing new flipped. `loginAdminChallenge` and `weakPasswordChallenge` were already solved from pt07's admin/admin123 credentials, unrelated to this test. `dlpPasswordSprayingChallenge`, the closest thing to a brute-force challenge in the catalog, stayed unsolved; it requires one specific leaked credential pair, not demonstrating the absence of rate limiting. Fourth item in a row (after pt24, pt25, pt26) found purely by black-box testing that isn't rewarded anywhere in Juice Shop's own 109-item catalog.
+
 ## Last uncovered OWASP category now covered
 
 With this item, all ten OWASP Top 10 2021 categories have at least one item in this repo.

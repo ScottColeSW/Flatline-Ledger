@@ -12,6 +12,8 @@ Fifteen consecutive wrong-password attempts against one freshly registered test 
 
 The login endpoint is the single most attacked surface in almost any web application, and this one has no logging, alerting, or defensive response to a sustained guessing attack against it at all.
 
+Checked the scoreboard before and after this run: nothing new flipped. `loginAdminChallenge` and `weakPasswordChallenge` were already solved, from [pt07](../pt07-weak-default-credentials/)'s admin/admin123 credentials, not from this test. The closest thing Juice Shop has to a brute-force challenge, `dlpPasswordSprayingChallenge`, stayed unsolved; it only flips for one specific leaked email+password pair submitted correctly, not for demonstrating that the endpoint has no rate limiting at all. Fourth item now (after pt24, pt25, pt26) found purely by black-box testing that isn't rewarded anywhere in Juice Shop's own 109-item catalog: the vendor tracks finding *a* credential, never the absence of a control against guessing volume.
+
 ## Classification
 
 **CWE-778** (Insufficient Logging). **OWASP: A09:2021 - Security Logging and Monitoring Failures.** **MITRE ATT&CK: T1110.001** (Brute Force: Password Guessing).
