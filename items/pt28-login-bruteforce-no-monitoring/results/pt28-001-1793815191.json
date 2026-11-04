@@ -1,0 +1,28 @@
+{
+  "vulnerability_id": "pt28-001",
+  "mitre_technique": "T1110.001",
+  "target": "http://localhost:3029",
+  "status": "REMEDIATED",
+  "attempt_statuses": [
+    401,
+    401,
+    401,
+    401,
+    401,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429
+  ],
+  "unthrottled_count": 5,
+  "blocked_count": 10,
+  "correct_password_worked": false,
+  "summary": "10/15 wrong-password attempts were blocked (HTTP 429) before reaching the backend; the attack pattern was interrupted.",
+  "legitimate_first_attempt_login_ok": true
+}

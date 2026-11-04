@@ -1,0 +1,28 @@
+{
+  "vulnerability_id": "pt28-001",
+  "mitre_technique": "T1110.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "attempt_statuses": [
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401
+  ],
+  "unthrottled_count": 15,
+  "blocked_count": 0,
+  "correct_password_worked": true,
+  "summary": "All 15 wrong-password attempts answered identically (401), none blocked, and the correct password worked immediately after with no consequence.",
+  "legitimate_first_attempt_login_ok": true
+}

@@ -16,4 +16,14 @@ Fifteen wrong-password attempts in a row against a real test account, timed back
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. All 15 wrong-password attempts against one test account answered `401`, none blocked, and the correct password worked immediately afterward.
+- Post-fix (through a proxy logging failed attempts per account and locking out further ones after 5 in a 60s window): `REMEDIATED`. Attempts 1-5 answered `401` and were logged; attempts 6-15 answered `429` before reaching the backend at all, including the final attempt with the correct password, the account was locked out by the time it was tried, which is the intended behavior of a real lockout control, not a broken legitimate case.
+- Legitimate check: a separate, freshly registered account with no prior failures logged in successfully on its very first attempt, in both conditions.
+
+## Last uncovered OWASP category now covered
+
+With this item, all ten OWASP Top 10 2021 categories have at least one item in this repo.
+
+Raw results in `results/pt28-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).
