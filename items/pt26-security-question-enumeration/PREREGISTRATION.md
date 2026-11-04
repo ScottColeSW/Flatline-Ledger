@@ -20,4 +20,14 @@ No entry flipped from running the burst against a fresh, non-NPC test account; t
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. All 10 burst requests (1 real registered test account + 9 fabricated emails) answered HTTP 200, no throttling, including a successful leak of the real account's security question.
+- Post-fix (through a proxy throttling by caller IP, 3 requests / 10s window): `REMEDIATED`, 7 of 10 burst requests came back HTTP 429.
+- Legitimate check: a single isolated query for the victim's own email, run after the throttle window reset, still returned HTTP 200 with the correct security question in both conditions.
+
+## Not in Juice Shop's own challenge catalog, third item in a row
+
+Checked the live scoreboard after confirming this. No new entry flipped. Three items in a row now (pt24, pt25, pt26) found purely by black-box testing that aren't among Juice Shop's 109 tracked challenges at all.
+
+Raw results in `results/pt26-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).

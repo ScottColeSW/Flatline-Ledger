@@ -1,0 +1,22 @@
+{
+  "vulnerability_id": "pt26-001",
+  "mitre_technique": "T1087.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "burst_statuses": [
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200
+  ],
+  "throttled_count": 0,
+  "answered_count": 10,
+  "summary": "All 10 burst requests were answered with no throttling, including a successful leak of the real victim account's security question.",
+  "legitimate_own_question_visible": true
+}

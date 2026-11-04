@@ -85,6 +85,26 @@ class ProxyHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(resp_body)
 
+    def do_POST(self):
+        length = self.headers.get("Content-Length")
+        body = self.rfile.read(int(length)) if length else b""
+
+        req = urllib.request.Request(BACKEND + self.path, data=body, method="POST")
+        for header in ("Content-Type", "Authorization"):
+            if self.headers.get(header):
+                req.add_header(header, self.headers[header])
+        try:
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                status, resp_body = resp.status, resp.read()
+        except urllib.error.HTTPError as exc:
+            status, resp_body = exc.code, exc.read()
+
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(resp_body)))
+        self.end_headers()
+        self.wfile.write(resp_body)
+
     def _throttle_check(self) -> bool:
         return _throttled(self.client_address[0])
 

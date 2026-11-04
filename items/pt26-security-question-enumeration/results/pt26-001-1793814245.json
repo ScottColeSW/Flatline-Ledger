@@ -1,0 +1,22 @@
+{
+  "vulnerability_id": "pt26-001",
+  "mitre_technique": "T1087.001",
+  "target": "http://localhost:3027",
+  "status": "REMEDIATED",
+  "burst_statuses": [
+    200,
+    200,
+    200,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429
+  ],
+  "throttled_count": 7,
+  "answered_count": 3,
+  "summary": "7/10 burst requests were throttled (HTTP 429); the oracle could not be swept across all 10 emails.",
+  "legitimate_own_question_visible": true
+}

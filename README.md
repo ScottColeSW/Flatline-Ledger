@@ -72,6 +72,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt23](items/pt23-forged-unauthenticated-review/) Forged, Unauthenticated Review Creation (Juice Shop, CWE-306/CWE-345, T1565.001, A01:2021) | Found while building pt22: review creation has no auth middleware at all, unlike its siblings on the same model, and trusts a client-supplied `author` field regardless | No control: `VULNERABLE` (HTTP 201, zero auth, fabricated author persisted). An auth-and-identity-pinning proxy: `REMEDIATED` (401), real authenticated reviews unaffected |
 | [pt24](items/pt24-address-idor-on-update/) Address IDOR on Update, With Ownership Hijack (Juice Shop, CWE-639, T1565.001, A01:2021) | Not in Juice Shop's own catalog at all. `PUT` on an address has no handler and no ownership check, unlike `GET`/`DELETE` on the same resource; a successful attack reassigns the row's ownership to the attacker, not just its data | No control: `VULNERABLE` (edit succeeds, victim locked out of their own address). A proxy that reuses the backend's own `GET` as an authorization oracle: `REMEDIATED` (403), self-edits unaffected |
 | [pt25](items/pt25-complaint-enumeration/) Complaint Enumeration (Juice Shop, CWE-862, T1213, A01:2021) | Not in Juice Shop's own catalog either, same bug shape as pt08 on an unrelated resource: `GET /api/Complaints` returns every account's complaints to anyone logged in, and the backend never even records a submitter to filter by | No control: `VULNERABLE` (a victim's marked complaint visible to an unrelated account). A proxy that tracks ownership the backend never kept: `REMEDIATED`, each account's own list still correct |
+| [pt26](items/pt26-security-question-enumeration/) Security Question Enumeration (Juice Shop, CWE-307, T1087.001, A07:2021) | Third item in a row not in Juice Shop's own catalog. `GET /rest/user/security-question?email=X` is unauthenticated and completely unthrottled, letting anyone enumerate any registered account (not just the catalog's named NPCs) and harvest its security question at whatever rate they choose | No control: `VULNERABLE` (10/10 burst requests answered). An IP-throttling proxy: `REMEDIATED` (7/10 throttled, HTTP 429), a single self-recovery lookup unaffected |
 
 ## Items
 
@@ -102,6 +103,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt23-forged-unauthenticated-review](items/pt23-forged-unauthenticated-review/) | Missing authentication + identity spoofing | Run live, 2026-11-04 |
 | [pt24-address-idor-on-update](items/pt24-address-idor-on-update/) | Broken access control / IDOR with ownership hijack | Run live, 2026-11-04 |
 | [pt25-complaint-enumeration](items/pt25-complaint-enumeration/) | Broken access control / missing authorization | Run live, 2026-11-04 |
+| [pt26-security-question-enumeration](items/pt26-security-question-enumeration/) | Improper restriction of excessive authentication attempts / account enumeration | Run live, 2026-11-04 |
 
 ## Keeping this safe
 
