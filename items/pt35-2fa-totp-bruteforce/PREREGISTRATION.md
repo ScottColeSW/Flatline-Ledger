@@ -12,4 +12,14 @@
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. All 15 random wrong-TOTP guesses against one account's 2FA answered `401`, none blocked, and the real code worked instantly afterward.
+- Post-fix (through a proxy locking a 2FA session out after 5 failures in a 60s window): `REMEDIATED`. Attempts 1-5 answered `401`; attempts 6-15 answered `429`, including the final attempt with the real code, the session was locked out by then, the same intended trade-off [pt28](../pt28-login-bruteforce-no-monitoring/)'s fix makes.
+- Legitimate check: a separate, freshly 2FA-enabled account's correct code on the very first attempt succeeded, in both conditions.
+
+## Not in Juice Shop's own challenge catalog
+
+Checked the scoreboard: `twoFactorAuthUnsafeSecretStorageChallenge` stayed unsolved, since it only flips for the specific named account `wurstbrot` via an unrelated data-exposure vector, not for demonstrating the verify endpoint's own lack of rate limiting. Sixth item now (after pt24, pt25, pt26, pt28, pt31) found outside Juice Shop's own 109-item catalog.
+
+Raw results in `results/pt35-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).

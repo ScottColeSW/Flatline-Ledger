@@ -1,0 +1,28 @@
+{
+  "vulnerability_id": "pt35-001",
+  "mitre_technique": "T1110.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "burst_statuses": [
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401,
+    401
+  ],
+  "unthrottled_count": 15,
+  "blocked_count": 0,
+  "correct_code_worked": true,
+  "summary": "All 15 wrong-TOTP attempts answered identically (401), none blocked, and the real code worked immediately after.",
+  "legitimate_first_attempt_2fa_ok": true
+}

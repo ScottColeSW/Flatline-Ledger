@@ -1,0 +1,28 @@
+{
+  "vulnerability_id": "pt35-001",
+  "mitre_technique": "T1110.001",
+  "target": "http://localhost:3036",
+  "status": "REMEDIATED",
+  "burst_statuses": [
+    401,
+    401,
+    401,
+    401,
+    401,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429
+  ],
+  "unthrottled_count": 5,
+  "blocked_count": 10,
+  "correct_code_worked": false,
+  "summary": "10/15 wrong-TOTP attempts were blocked (HTTP 429); the brute-force pattern was interrupted.",
+  "legitimate_first_attempt_2fa_ok": true
+}
