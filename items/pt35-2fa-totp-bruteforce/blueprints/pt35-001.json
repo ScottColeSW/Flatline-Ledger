@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt35-001",
+  "mitre_technique": "T1110.001",
+  "owasp_category": "A07:2021 - Identification and Authentication Failures",
+  "cwe": "CWE-307",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/2fa/verify",
+  "description": "routes/2fa.ts's verify handler calls otplib.authenticator.check(totpToken, user.totpSecret) with no rate limiting, no lockout, and no logging of failed attempts anywhere around it, the same missing-monitoring pattern pt28 found on the primary login endpoint, now on the second factor. Once an attacker has a valid tmpToken (meaning they already know the account's password), the six-digit TOTP code is a 1,000,000-value space, slightly widened by the library's +/-30s window tolerance, with nothing stopping an unlimited number of guesses against it. Juice Shop's own catalog challenge for 2FA only scores extracting a specific named NPC's (wurstbrot) TOTP secret through a separate data-exposure vulnerability; it has no challenge for the verify endpoint itself having no brute-force protection, which defeats the entire premise of a second factor for every account, not just that one.",
+  "expected_exploit_indicator": "A burst of 15 random six-digit TOTP guesses against one account's 2FA verification all answer identically (HTTP 401), with no throttling, and the real code still succeeds immediately afterward",
+  "expected_blocked_signal": "After a small number of failed 2FA attempts against one account in a short window, further attempts (even a correct guess) are refused before reaching the backend's otplib check",
+  "legitimate_check": "A correct TOTP code on the first attempt, with no prior failures, still succeeds immediately."
+}
