@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt25-001",
+  "mitre_technique": "T1213",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-862",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/api/Complaints",
+  "description": "server.js's own comment states the intended rule directly: '/* Complaints: POST and GET allowed when logged in only */'. No handler function enforces anything beyond that login requirement; the generic Sequelize REST default behind it returns every complaint from every account to any authenticated caller, no scoping at all. Confirmed with a distinctly-marked complaint submitted by one account and read back by a completely unrelated one, alongside a real seeded complaint from the running container's own data.",
+  "expected_exploit_indicator": "An unrelated authenticated account's GET to the list endpoint includes a marked complaint submitted by a different account",
+  "expected_blocked_signal": "The list returned to each caller contains only that caller's own complaints",
+  "legitimate_check": "An authenticated account must still be able to see its own submitted complaint in the list."
+}

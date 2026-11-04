@@ -1,0 +1,9 @@
+{
+  "vulnerability_id": "pt25-001",
+  "mitre_technique": "T1213",
+  "target": "http://localhost:3026",
+  "status": "REMEDIATED",
+  "exploit_http_status": 200,
+  "summary": "The attacker's own list did not include the victim's complaint.",
+  "legitimate_own_complaint_visible": true
+}

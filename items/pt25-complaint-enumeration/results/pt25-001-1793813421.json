@@ -1,0 +1,9 @@
+{
+  "vulnerability_id": "pt25-001",
+  "mitre_technique": "T1213",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "An unrelated account's GET to the complaint list included another account's complaint.",
+  "legitimate_own_complaint_visible": true
+}
