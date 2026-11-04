@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt33-001",
+  "mitre_technique": "T1204.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 302,
+  "exploit_location": "https://flatline-pt33-phish.test/phish?x=https://github.com/juice-shop/juice-shop",
+  "summary": "A crafted URL on an attacker-controlled host that merely contains an allowlisted string was followed with a real 302 to https://flatline-pt33-phish.test/phish?x=https://github.com/juice-shop/juice-shop.",
+  "legitimate_allowlisted_redirect_ok": true
+}

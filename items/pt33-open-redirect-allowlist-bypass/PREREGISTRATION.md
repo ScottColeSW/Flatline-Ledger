@@ -24,4 +24,14 @@ export const isRedirectAllowed = (url: string) => {
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. `GET /redirect?to=https://flatline-pt33-phish.test/phish?x=https://github.com/juice-shop/juice-shop` returned `302` with `Location: https://flatline-pt33-phish.test/phish?x=https://github.com/juice-shop/juice-shop`, a real redirect to the attacker-controlled host.
+- Post-fix (through a proxy with a correct prefix-based allowlist check): `REMEDIATED`. The same request was rejected `406`.
+- Legitimate check: a redirect straight to an allowlisted URL (`https://github.com/juice-shop/juice-shop`) succeeded in both conditions.
+
+## Checked the scoreboard
+
+`redirectChallenge` ("Allowlist Bypass") flipped solved. `redirectCryptoCurrencyChallenge` (a different, narrower challenge requiring the exact crypto-donation URLs) stayed unsolved, as expected, since this item didn't target those.
+
+Raw results in `results/pt33-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).

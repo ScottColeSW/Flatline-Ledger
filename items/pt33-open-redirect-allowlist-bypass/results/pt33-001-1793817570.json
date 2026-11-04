@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt33-001",
+  "mitre_technique": "T1204.001",
+  "target": "http://localhost:3034",
+  "status": "REMEDIATED",
+  "exploit_http_status": 406,
+  "exploit_location": null,
+  "summary": "The crafted URL was rejected (HTTP 406): it does not actually start with any allowlisted origin.",
+  "legitimate_allowlisted_redirect_ok": true
+}
