@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt33-001",
+  "mitre_technique": "T1204.001",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-601",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/redirect",
+  "description": "lib/insecurity.ts's isRedirectAllowed checks url.includes(allowedUrl) for each entry in a small allowlist of trusted destinations, instead of checking that the target URL actually starts with (or equals the host of) an allowed entry. A URL on an attacker-controlled domain that merely contains an allowlisted string anywhere in its path or query, such as a query parameter whose value happens to be a trusted URL, passes this check and the server issues a real HTTP 302 redirect to the attacker's own domain.",
+  "expected_exploit_indicator": "GET /redirect?to=<attacker domain>?x=<allowlisted URL> returns an HTTP 302 redirect whose Location header points at the attacker-controlled domain, not the allowlisted one",
+  "expected_blocked_signal": "The same request is rejected (406) because the target URL does not actually start with any allowlisted origin",
+  "legitimate_check": "A redirect straight to an allowlisted URL (no attacker-controlled host involved) still succeeds."
+}
