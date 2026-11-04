@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt24-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "summary": "Attacker's PUT succeeded, reassigned ownership to themselves, and the victim lost access to their own address.",
+  "ownership_reassigned_to_attacker": true,
+  "victim_lost_access": true,
+  "legitimate_self_edit_ok": true
+}

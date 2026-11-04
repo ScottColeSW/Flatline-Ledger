@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt24-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3025",
+  "status": "REMEDIATED",
+  "exploit_http_status": 403,
+  "summary": "Blocked with HTTP 403.",
+  "ownership_reassigned_to_attacker": false,
+  "victim_lost_access": false,
+  "legitimate_self_edit_ok": true
+}

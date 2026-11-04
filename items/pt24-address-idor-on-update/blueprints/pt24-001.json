@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt24-001",
+  "mitre_technique": "T1565.001",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-639",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "PUT",
+  "endpoint": "/api/Addresss/{id}",
+  "description": "Found black-box while exploring the address-book feature through the actual UI. GET and DELETE on this resource both correctly scope to the caller's own UserId (routes/address.js has explicit handlers for both). PUT has no handler function at all in server.js's own route table, falling through to the generic Sequelize REST default with no ownership check. Worse than a plain IDOR: security.appendUserId() unconditionally overwrites the request body's UserId to the caller's own id before the generic update runs, so a successful attack doesn't just overwrite the victim's data, it permanently reassigns ownership of the record to the attacker. Confirmed live against a real seeded address (admin's), whose field-level data was restored afterward from the original users.yml seed values; ownership could not be restored through this same API and stayed reassigned.",
+  "expected_exploit_indicator": "A PUT to another account's address id succeeds (HTTP 200) and the victim's own subsequent GET for that address no longer returns it (ownership was reassigned)",
+  "expected_blocked_signal": [403, 404],
+  "legitimate_check": "An account editing its own address must keep working in every condition."
+}
