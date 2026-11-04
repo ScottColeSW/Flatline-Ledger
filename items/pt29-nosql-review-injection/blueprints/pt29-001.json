@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt29-001",
+  "mitre_technique": "T1565.001",
+  "owasp_category": "A03:2021 - Injection",
+  "cwe": "CWE-943",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "PATCH",
+  "endpoint": "/rest/products/reviews",
+  "description": "routes/updateProductReviews.ts passes req.body.id straight into a marsdb (NoSQL) filter, db.reviewsCollection.update({ _id: req.body.id }, { $set: { message: req.body.message } }, { multi: true }), with no type check and no ownership check against the caller. Juice Shop's own challenge (noSqlReviewsChallenge, 'NoSQL Manipulation') only requires updating more than one review at once, which a single Mongo-style query operator in place of a plain id string does trivially. Manually confirmed the full severity of this during initial black-box discovery: a single authenticated request with id set to {\"$ne\": null} matched and overwrote the message field of every review in the entire database, 38 documents across every product and every account including real seeded reviews, not just the attacker's own, in one call. That full-collection run was accidental and has been restored from the same response's own 'original' field; the scripted, repeatable version of this exploit below deliberately scopes its injection to two self-created test reviews by their own _id values via the $in operator, to demonstrate the identical mechanism (no type check, no ownership check, enabling an arbitrary multi-document update) without touching real content.",
+  "expected_exploit_indicator": "A single authenticated PATCH with a MongoDB query operator (not a plain string) in the id field updates a review belonging to a different account, with no ownership check and no rejection of the operator value",
+  "expected_blocked_signal": "A PATCH whose id field is not a plain string is rejected (400) before reaching the backend, while a normal single-id update by its exact string id still succeeds",
+  "legitimate_check": "A normal update to one's own review by its exact string _id still succeeds and only that review changes."
+}
