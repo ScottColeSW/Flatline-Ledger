@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt29-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 200,
+  "modified_count": 2,
+  "victim_overwritten_by_attacker": true,
+  "summary": "A single authenticated PATCH using a $in operator overwrote a review belonging to a different account, no ownership check, no type check on id.",
+  "legitimate_own_review_update_ok": true
+}

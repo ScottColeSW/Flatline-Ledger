@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt29-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3030",
+  "status": "REMEDIATED",
+  "exploit_http_status": 400,
+  "modified_count": null,
+  "victim_overwritten_by_attacker": false,
+  "summary": "The $in operator in id was rejected (HTTP 400) before reaching the backend; the victim's review was untouched.",
+  "legitimate_own_review_update_ok": true
+}

@@ -32,4 +32,14 @@ No validation that `req.body.id` is a string, no check that `security.authentica
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. A scoped `$in` injection over two self-created test reviews returned `modified: 2`, and the victim's review (not owned by the attacker) was confirmed overwritten.
+- Post-fix (through a proxy rejecting any non-string `id` on this endpoint): `REMEDIATED`. The same request came back `400` before reaching the backend; the victim's review was untouched.
+- Legitimate check: a normal update to one's own review by its real, exact string `_id` succeeded in both conditions.
+
+## Checked the scoreboard
+
+`noSqlReviewsChallenge` ("NoSQL Manipulation") flipped solved, confirming this is a tracked Juice Shop challenge, unlike pt24, pt25, pt26, and pt28. The catalog's own description, "update multiple product reviews at the same time," undersells it: the manual confirmation during discovery showed the same mechanism reaches the entire collection, not just "multiple."
+
+Raw results in `results/pt29-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).
