@@ -12,4 +12,14 @@ Read directly from `data/static/challenges.yml`: `forgedCouponChallenge` ("Forge
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. A 90%-off coupon computed offline was accepted, applied, and used to complete a real checkout (no wallet payment involved, avoiding pt31's crash path).
+- Post-fix (through a proxy issuing and verifying HMAC-signed coupons, translating only valid ones into the backend's native z85 format): `REMEDIATED`. The same forged coupon was rejected `403`.
+- Legitimate check: a coupon obtained from the proxy's own signed-issuance endpoint applied correctly in both conditions (pre-fix it falls back to the backend's native, currently-unfixed scheme, since the issuance endpoint doesn't exist there yet).
+
+## Checked the scoreboard
+
+`forgedCouponChallenge` flipped solved only after completing a full checkout with the forged coupon applied (`order.ts` checks `discount >= 80` at order-placement time, not at coupon-apply time); applying the coupon to the basket alone does not flip it. Confirmed by checking the scoreboard both ways during discovery.
+
+Raw results in `results/pt32-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).
