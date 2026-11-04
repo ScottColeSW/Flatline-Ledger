@@ -1,0 +1,19 @@
+{
+  "vulnerability_id": "pt27-001",
+  "mitre_technique": "T1499.004",
+  "target": "http://localhost:3012",
+  "status": "VULNERABLE",
+  "baseline_seconds": 0.234,
+  "under_load_seconds": 9.937,
+  "slowdown_factor": 42.47,
+  "bomb_statuses": [
+    503,
+    503,
+    503,
+    503,
+    503
+  ],
+  "blocked_count": 0,
+  "summary": "Legitimate request went from 0.23s baseline to 9.94s under 5 concurrent YAML-bomb uploads (42.5x), none blocked.",
+  "legitimate_plain_upload_ok": true
+}

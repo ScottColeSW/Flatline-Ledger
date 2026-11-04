@@ -20,4 +20,10 @@ The complaint page accepts a `.yml`/`.yaml` attachment with no login required. U
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04 (against `flatline-juice-shop-unsafe`, port 3012). Prediction held.**
+
+- Pre-fix: `VULNERABLE`. A legitimate product-search request went from a 0.23s baseline to 9.94s while five YAML bombs were parsing concurrently, a 42.5x slowdown. All five bomb uploads answered `503` (each hit its own 2-second timeout), none were blocked. The unsafe container stayed healthy throughout, confirmed with a direct health check right after.
+- Post-fix (through a proxy throttling `.yml`/`.yaml` uploads to 1 per 15s per caller IP): `REMEDIATED`. 4 of 5 concurrent bomb uploads were refused with `429` before reaching the backend parser; the legitimate request's timing stayed within the non-significant range (1.7x, under the 3x/1.5s threshold used to call this vulnerable).
+- Legitimate check: a plain `.pdf` complaint upload, no YAML involved, returned `204` in both conditions, untouched by the throttle.
+
+Raw results in `results/pt27-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).

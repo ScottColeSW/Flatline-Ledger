@@ -73,6 +73,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt24](items/pt24-address-idor-on-update/) Address IDOR on Update, With Ownership Hijack (Juice Shop, CWE-639, T1565.001, A01:2021) | Not in Juice Shop's own catalog at all. `PUT` on an address has no handler and no ownership check, unlike `GET`/`DELETE` on the same resource; a successful attack reassigns the row's ownership to the attacker, not just its data | No control: `VULNERABLE` (edit succeeds, victim locked out of their own address). A proxy that reuses the backend's own `GET` as an authorization oracle: `REMEDIATED` (403), self-edits unaffected |
 | [pt25](items/pt25-complaint-enumeration/) Complaint Enumeration (Juice Shop, CWE-862, T1213, A01:2021) | Not in Juice Shop's own catalog either, same bug shape as pt08 on an unrelated resource: `GET /api/Complaints` returns every account's complaints to anyone logged in, and the backend never even records a submitter to filter by | No control: `VULNERABLE` (a victim's marked complaint visible to an unrelated account). A proxy that tracks ownership the backend never kept: `REMEDIATED`, each account's own list still correct |
 | [pt26](items/pt26-security-question-enumeration/) Security Question Enumeration (Juice Shop, CWE-307, T1087.001, A07:2021) | Third item in a row not in Juice Shop's own catalog. `GET /rest/user/security-question?email=X` is unauthenticated and completely unthrottled, letting anyone enumerate any registered account (not just the catalog's named NPCs) and harvest its security question at whatever rate they choose | No control: `VULNERABLE` (10/10 burst requests answered). An IP-throttling proxy: `REMEDIATED` (7/10 throttled, HTTP 429), a single self-recovery lookup unaffected |
+| [pt27](items/pt27-yaml-bomb-dos/) YAML Bomb DoS, Concurrent-Upload Amplification (Juice Shop, CWE-502, T1499.004, A08:2021) | First item deliberately targeting an A08 coverage gap. `yaml.load()` on a `.yml` complaint attachment is capped per-request by a 2s timeout, but nothing limits concurrent uploads from one caller; 5 parallel YAML bombs stalled an unrelated request 42.5x. Run against the isolated `-unsafe` container, not the shared one | No control: `VULNERABLE` (0.23s to 9.94s under load, 0/5 blocked). An IP-throttling proxy: `REMEDIATED` (stayed within non-significant range, 4/5 blocked), plain uploads unaffected |
 
 ## Items
 
@@ -104,6 +105,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt24-address-idor-on-update](items/pt24-address-idor-on-update/) | Broken access control / IDOR with ownership hijack | Run live, 2026-11-04 |
 | [pt25-complaint-enumeration](items/pt25-complaint-enumeration/) | Broken access control / missing authorization | Run live, 2026-11-04 |
 | [pt26-security-question-enumeration](items/pt26-security-question-enumeration/) | Improper restriction of excessive authentication attempts / account enumeration | Run live, 2026-11-04 |
+| [pt27-yaml-bomb-dos](items/pt27-yaml-bomb-dos/) | Insecure deserialization / denial of service | Run live, 2026-11-04 |
 
 ## Keeping this safe
 

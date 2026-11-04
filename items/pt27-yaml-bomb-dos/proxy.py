@@ -96,6 +96,22 @@ class ProxyHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(resp_body)
 
+    def do_GET(self):
+        req = urllib.request.Request(BACKEND + self.path, method="GET")
+        if self.headers.get("Authorization"):
+            req.add_header("Authorization", self.headers["Authorization"])
+        try:
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                status, resp_body = resp.status, resp.read()
+        except urllib.error.HTTPError as exc:
+            status, resp_body = exc.code, exc.read()
+
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(resp_body)))
+        self.end_headers()
+        self.wfile.write(resp_body)
+
     def _is_yaml_bomb_candidate(self, body: bytes) -> bool:
         content_type = self.headers.get("Content-Type", "")
         if "multipart/form-data" not in content_type:
