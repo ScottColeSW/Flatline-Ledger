@@ -1,0 +1,18 @@
+{
+  "vulnerability_id": "pt23-001",
+  "mitre_technique": "T1565.001",
+  "mitre_technique_secondary": "T1036",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe_primary": "CWE-306",
+  "cwe_secondary": "CWE-345",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "PUT",
+  "endpoint": "/rest/products/{id}/reviews",
+  "description": "Found while probing review creation for pt22: server.js shows this route mounted with no isAuthorized() middleware at all, unlike its PATCH and POST siblings on the same model. createProductReviews.js looks up the caller optionally but never rejects when none is found, and inserts whatever 'author' field the client supplied regardless. A completely unauthenticated request, no token, no cookie, created a real, persisted review under a fully fabricated author identity that doesn't correspond to any real account.",
+  "forged_author": "totally-fake@nobody.test",
+  "expected_exploit_indicator": "HTTP 201 with no Authorization header at all, and the review persists afterward with the exact fabricated author string",
+  "expected_blocked_signal": [401, 403],
+  "legitimate_check": "A real, authenticated account submitting a review under its own correct email must keep working in every condition."
+}

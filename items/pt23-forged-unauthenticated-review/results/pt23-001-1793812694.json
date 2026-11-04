@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt23-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3024",
+  "status": "REMEDIATED",
+  "exploit_http_status": 401,
+  "summary": "Blocked with HTTP 401.",
+  "legitimate_authentic_review_ok": true,
+  "legitimate_authentic_review_http_status": 201
+}

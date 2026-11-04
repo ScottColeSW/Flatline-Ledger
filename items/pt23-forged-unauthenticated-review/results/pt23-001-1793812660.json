@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt23-001",
+  "mitre_technique": "T1565.001",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "exploit_http_status": 201,
+  "summary": "Created a review with no authentication at all, author forged to 'totally-fake@nobody.test'.",
+  "legitimate_authentic_review_ok": true,
+  "legitimate_authentic_review_http_status": 201
+}

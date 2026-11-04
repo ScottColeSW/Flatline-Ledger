@@ -69,6 +69,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt20](items/pt20-deprecated-interface/) Deprecated Interface Not Properly Shut Down (Juice Shop, CWE-16, A05:2021) | Same route pt17 exploited, an earlier finding: a benign `.xml` upload gets `HTTP 410` with a message, proving the route still runs real logic instead of returning a plain 404 | No control: `VULNERABLE` (410, logic ran first). A true-decommissioning proxy: `REMEDIATED` (404, as if the route never existed), the still-supported `.pdf` path unaffected |
 | [pt21](items/pt21-verbose-error-disclosure/) Verbose Error Disclosure (Juice Shop, CWE-209, T1592.002, A05:2021) | A third incidental scoreboard flip, formalized: the apostrophe-email trigger from pt02 renders a full stack trace (file paths, ORM, DB engine) as the HTTP 500 response body | No control: `VULNERABLE` (full stack trace leaked). A leak-scrubbing proxy: `REMEDIATED` (same 500, generic body), normal logins unaffected |
 | [pt22](items/pt22-review-like-race-condition/) Review Like Race Condition (Juice Shop, CWE-362, A04:2021) | Found black-box first, source read only after: 10 real concurrent like requests from one account produced 10 entries in a review's `likedBy`. Corroborated against the source, a deliberate 150ms sleep between the check and the write | No control: `VULNERABLE` (10/10 succeeded). A request-serializing proxy: `REMEDIATED` (1/10 succeeded, 9 rejected), single likes unaffected |
+| [pt23](items/pt23-forged-unauthenticated-review/) Forged, Unauthenticated Review Creation (Juice Shop, CWE-306/CWE-345, T1565.001, A01:2021) | Found while building pt22: review creation has no auth middleware at all, unlike its siblings on the same model, and trusts a client-supplied `author` field regardless | No control: `VULNERABLE` (HTTP 201, zero auth, fabricated author persisted). An auth-and-identity-pinning proxy: `REMEDIATED` (401), real authenticated reviews unaffected |
 
 ## Items
 
@@ -96,6 +97,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt20-deprecated-interface](items/pt20-deprecated-interface/) | Security misconfiguration / improper decommissioning | Run live, 2026-11-03 |
 | [pt21-verbose-error-disclosure](items/pt21-verbose-error-disclosure/) | Security misconfiguration / information disclosure | Run live, 2026-11-03 |
 | [pt22-review-like-race-condition](items/pt22-review-like-race-condition/) | Race condition / insecure design | Run live, 2026-11-04 |
+| [pt23-forged-unauthenticated-review](items/pt23-forged-unauthenticated-review/) | Missing authentication + identity spoofing | Run live, 2026-11-04 |
 
 ## Keeping this safe
 
