@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt34-001",
+  "mitre_technique": "T1005",
+  "owasp_category": "A05:2021 - Security Misconfiguration",
+  "cwe": "CWE-158",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/ftp/{file}",
+  "description": "routes/fileServer.ts's servePublicFiles checks the RAW requested filename ends with .md or .pdf before serving it, then only afterward calls security.cutOffPoisonNullByte(file), which truncates the filename at the first literal '%00' substring. Because the extension check runs before the truncation, a request for any filename with '%2500.md' appended (which Express decodes once into a literal '%00.md' tail) passes the .md check on the full string, but the file actually opened and streamed back is everything before the null byte, any extension, any name. This serves arbitrary files out of the ftp/ directory regardless of the intended .md/.pdf allowlist, including files the UI never links to at all, such as a hidden easter-egg text file and a backup of an old package.json revealing dependency history.",
+  "expected_exploit_indicator": "GET /ftp/{filename}%2500.md returns the full content of {filename} regardless of its real extension, for a filename never served through the normal, extension-respecting path",
+  "expected_blocked_signal": "The same request is rejected because the file being opened, after truncating at the null byte, does not itself end in an allowlisted extension",
+  "legitimate_check": "A real .md file requested normally (no null byte) still downloads correctly."
+}
