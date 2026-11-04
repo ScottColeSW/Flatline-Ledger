@@ -1,0 +1,18 @@
+{
+  "vulnerability_id": "pt22-001",
+  "mitre_technique": null,
+  "mitre_technique_note": "Race-condition exploitation to inflate a counter has no clean ATT&CK mapping; same honest gap as pt05, pt15, and pt20.",
+  "owasp_category": "A04:2021 - Insecure Design",
+  "owasp_category_note": "Juice Shop's own catalog files this under 'Broken Anti Automation', which isn't a 2021 Top 10 category on its own; A04:2021 is the closest real match for a TOCTOU design flaw.",
+  "cwe": "CWE-362",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/products/reviews",
+  "description": "Found black-box first, before reading any source: liking a review appeared to already be 'liked' for every account, including a fully anonymous request with no auth at all. Firing 10 concurrent like requests from one account against one review produced 6 successful likes (confirmed against the real backend) instead of the intended one. Corroborated afterward against the real source (likeProductReviews.js): the 'already liked' check reads stale state before a deliberate 150ms sleep, then writes after, a textbook check-then-act race window the vendor's own code comments acknowledge exists on purpose for this exact challenge.",
+  "concurrent_request_count": 10,
+  "expected_exploit_indicator": "The same account's email appears more than once in a single review's likedBy array after N concurrent like requests",
+  "expected_blocked_signal": "The same account's email appears at most once, regardless of how many concurrent requests were fired",
+  "legitimate_check": "A single, non-concurrent like request must still succeed normally in every condition."
+}

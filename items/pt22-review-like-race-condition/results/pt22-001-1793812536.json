@@ -1,0 +1,9 @@
+{
+  "vulnerability_id": "pt22-001",
+  "target": "http://localhost:3023",
+  "status": "REMEDIATED",
+  "concurrent_request_count": 10,
+  "attacker_like_count": 1,
+  "summary": "10 concurrent requests produced at most 1 entry for the same account in likedBy (status codes: [403, 403, 403, 403, 403, 403, 403, 403, 403, 200]).",
+  "legitimate_single_like_ok": true
+}
