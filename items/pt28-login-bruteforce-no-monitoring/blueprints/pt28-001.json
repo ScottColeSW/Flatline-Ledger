@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt28-001",
+  "mitre_technique": "T1110.001",
+  "owasp_category": "A09:2021 - Security Logging and Monitoring Failures",
+  "cwe": "CWE-778",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/user/login",
+  "description": "routes/login.ts has no failed-attempt counter, no lockout, no CAPTCHA, and no rate limiting of any kind around the login handler, only a raw SQL lookup and a 401 on no match. A freshly registered test account took 15 consecutive wrong-password attempts in a row, every one answering with an identical 401 and no change in behavior between the first and the fifteenth, then logged in successfully on the very next try with the correct password, with no delay, no extra verification step, and no visible consequence from the preceding attack pattern at all. Checked the rest of the codebase (server.ts, app.ts, the reset-password flow) for any global rate-limiting or brute-force-detection middleware; none exists anywhere in this application. A basic logging-and-alerting capability watching for this exact pattern, repeated failures against one account in a short window, is the kind of control OWASP A09 is about, and this app has none at all on its single most attacked endpoint.",
+  "expected_exploit_indicator": "15 consecutive failed login attempts against one account all answer identically (HTTP 401), with no throttling, lockout, or behavioral change, and the account remains immediately usable with the correct password right after",
+  "expected_blocked_signal": "After a small number of failed attempts against one account in a short window, further attempts (even with a correct guess) are refused before reaching the backend, simulating the account-lockout response a real monitoring/alerting pipeline would trigger",
+  "legitimate_check": "A normal login, correct password on the first attempt with no prior failures, succeeds immediately and is never delayed or blocked."
+}
