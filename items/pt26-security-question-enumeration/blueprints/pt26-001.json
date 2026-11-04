@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt26-001",
+  "mitre_technique": "T1087.001",
+  "owasp_category": "A07:2021 - Identification and Authentication Failures",
+  "cwe": "CWE-307",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/rest/user/security-question",
+  "description": "routes/securityQuestion.ts answers GET /rest/user/security-question?email=X with no authentication, no CSRF concern, and no rate limiting of any kind. The handler returns {question:{...}} when the email belongs to a registered account with a security question set, and {} otherwise, an observable difference that lets anyone confirm whether an arbitrary email is a registered account and, if so, exactly which security question protects its password reset. Juice Shop's own challenge catalog only scores six named NPC accounts (Bjoern, Bender, Jim, Morty, Uvogin) being reset by social-engineering their specific answer; it never checks whether the oracle itself can be hammered against arbitrary emails including freshly-registered ones that were never part of any challenge.",
+  "expected_exploit_indicator": "A rapid burst of unauthenticated requests against distinct emails (a mix of a real registered test account and fabricated ones) all return HTTP 200 with no throttling, letting an attacker enumerate accounts and harvest security questions at whatever rate they choose",
+  "expected_blocked_signal": "After a small number of requests from the same caller in a short window, further requests are refused (HTTP 429) rather than answered",
+  "legitimate_check": "A single isolated query for one's own email (the real forgot-password flow, one request per page load) still succeeds and returns the correct security question."
+}
