@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt31-001",
+  "mitre_technique": "T1499.004",
+  "owasp_category": "A04:2021 - Insecure Design",
+  "cwe": "CWE-248",
+  "target": {
+    "host": "http://localhost:3012"
+  },
+  "method": "POST",
+  "endpoint": "/rest/basket/{basket_id}/checkout",
+  "description": "routes/order.ts generates an order's PDF receipt on a write stream and separately checks the caller's wallet balance against the order total when paymentId is 'wallet'. When the balance is insufficient, the handler calls next(new Error('Insufficient wallet balance.')), but the PDF write stream's own 'finish' event handler independently calls res.json(...) regardless, with no coordination between the two paths. Whichever runs second throws an uncaught ERR_HTTP_HEADERS_SENT (headers already sent by the first), which is not caught anywhere and crashes the entire Node process. This is not a crafted attack payload, it is the single most ordinary checkout failure a web shop can have: a customer whose wallet balance is lower than their order total. Confirmed live against flatline-juice-shop-unsafe: an authenticated account with a $0 wallet added one item to its basket and checked out with paymentId 'wallet'; the request returned HTTP 500 and the entire container became unreachable immediately after. Discovered while building pt30; not found anywhere in Juice Shop's own 109-item challenge catalog.",
+  "expected_exploit_indicator": "A checkout request whose wallet balance is less than the order total crashes the entire backend process, leaving the server unreachable for all subsequent requests from any account",
+  "expected_blocked_signal": "A checkout request whose estimated total exceeds the caller's own wallet balance is rejected with a clean error before it ever reaches the backend, and the server remains reachable afterward",
+  "legitimate_check": "A checkout request whose wallet balance covers the order total still succeeds normally."
+}
