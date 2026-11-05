@@ -57,5 +57,6 @@ Raw per-run output: `results/pt40-001-*.json`. `python ledger.py verify` from th
 
 ## What this does not show
 
+- This same `unsafe.yml` config also reopens a third, unrelated finding one level deeper than either pt10's or this item's own gate: [pt41](../pt41-ssti-eval-rce/) (SSTI `eval()` RCE), whose own challenge flag genuinely checks itself correctly, but whose enablement logic still short-circuits open under this same config.
 - The real fix is the one pt10 already documents: don't ship a config that disables the sanitizing regex at all, or at minimum keep it off outside of deliberate, clearly-labeled test environments.
 - Same caveats as pt10 and the other items: one vendor image, one run each, no ticket-loop integration yet.

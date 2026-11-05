@@ -87,6 +87,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt38](items/pt38-sqli-search-credential-schema-dump/) SQL Injection via Product Search, Credential and Schema Dump (Juice Shop, CWE-89, T1190, A03:2021) | Found white-box ("Database Schema" + "User Credentials"), two catalog challenges from one unparameterized query. An unauthenticated UNION SELECT dumps every account's email+password hash, or the full table schema, from the public search endpoint | No control: `VULNERABLE` (credentials and schema both dumped). A keyword-filter proxy: `REMEDIATED` (`400` on both), normal search unaffected |
 | [pt39](items/pt39-discontinued-product-purchase/) Discontinued and Safety-Recalled Products Still Purchasable (Juice Shop, CWE-862, A01:2021) | Found white-box ("Christmas Special"). Basket-add never checks whether a product is soft-deleted, only stock. Used pt38's SQLi to find the hidden product id, which also surfaced a second, safety-recalled hidden product, both purchasable | No control: `VULNERABLE` (both added, one checks out). An oracle-check proxy: `REMEDIATED` (`400` on both), normal product adds unaffected |
 | [pt40](items/pt40-nosql-order-exfiltration/) NoSQL Order Exfiltration, a disabledEnv Flag That Doesn't Mean What It Looks Like (Juice Shop, CWE-943, T1190, A03:2021) | Found by verifying a "ruled out" Docker-disabled flag live instead of trusting it: the challenge's own flag is real but irrelevant, the vulnerable branch is gated by a *different* challenge's flag. Same route/config pairing as pt10; an unauthenticated injection leaks real cross-account orders on the unsafe config | Safe config: `REMEDIATED` (1 placeholder row). Unsafe config: `VULNERABLE` (5 rows, both test orders leaked), own-order tracking unaffected |
+| [pt41](items/pt41-ssti-eval-rce/) SSTI eval() RCE, a Severity Escalation From an Earlier Close Call (Juice Shop, CWE-95, T1059.007, A03:2021) | The most severe finding in this repo. A username matching `#{...}` is passed to a raw, unsandboxed `eval()`. Genuinely blocked on the default container, but the same `unsafe.yml` config pt10/pt40 reopen also short-circuits this challenge's own correctly-checked flag open. Confirmed with a deliberately harmless PoC (reads the real Node.js version only) | Safe config: `REMEDIATED` (literal text only). Unsafe config: `VULNERABLE` (real Node.js version eval'd and rendered), normal usernames unaffected |
 
 ## Items
 
@@ -132,6 +133,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt38-sqli-search-credential-schema-dump](items/pt38-sqli-search-credential-schema-dump/) | SQL injection (UNION-based) | Run live, 2026-11-05 |
 | [pt39-discontinued-product-purchase](items/pt39-discontinued-product-purchase/) | Broken access control / missing authorization | Run live, 2026-11-05 |
 | [pt40-nosql-order-exfiltration](items/pt40-nosql-order-exfiltration/) | NoSQL injection | Run live, 2026-11-05 |
+| [pt41-ssti-eval-rce](items/pt41-ssti-eval-rce/) | Server-side template injection / remote code execution | Run live, 2026-11-05 |
 
 ## Keeping this safe
 

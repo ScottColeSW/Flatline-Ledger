@@ -16,4 +16,14 @@ This is a raw, unsandboxed `eval(code)` call, not a `vm.createContext` sandbox l
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-05. Prediction held exactly.**
+
+- Safe config (`--mode safe`, port 3001): `REMEDIATED`. The username was stored and displayed literally; no Node.js version string appeared anywhere in the response.
+- Unsafe config (`--mode unsafe`, port 3012): `VULNERABLE`. The real running Node.js version (`v20.19.0`) appeared on the profile page, confirming the payload was `eval()`'d server-side.
+- Legitimate check: a normal username with no `#{...}` pattern displayed correctly as itself in both configs.
+
+## Checked the scoreboard
+
+`usernameXssChallenge` stayed unsolved (it scores a different, narrower client-side XSS payload combined with a CSP weakness, not this). `sstiChallenge` ("SSTi") flipped solved after confirming the eval() fired and separately hitting the app's own `/solve/challenges/server-side?key=...` scoring endpoint, which checks whether the eval() branch was actually exercised during the session.
+
+Raw results in `results/pt41-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).

@@ -1,0 +1,9 @@
+{
+  "vulnerability_id": "pt41-001",
+  "mitre_technique": "T1059.007",
+  "target": "http://localhost:3001",
+  "status": "REMEDIATED",
+  "node_version_leaked": false,
+  "summary": "The username was stored and displayed literally; no eval'd Node.js version string appeared anywhere in the response.",
+  "legitimate_normal_username_displays_ok": true
+}
