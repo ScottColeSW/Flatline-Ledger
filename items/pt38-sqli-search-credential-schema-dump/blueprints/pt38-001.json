@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt38-001",
+  "mitre_technique": "T1190",
+  "owasp_category": "A03:2021 - Injection",
+  "cwe": "CWE-89",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "GET",
+  "endpoint": "/rest/products/search",
+  "description": "routes/search.ts builds the product search query with raw string interpolation: SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name, with no parameterization at all on the q query-string parameter. The Products table has 9 columns, determined live by incrementing a UNION SELECT NULL,NULL,... payload until the column-count error disappeared. A single unauthenticated GET request with a UNION SELECT payload appended to q dumps either every user's email and password hash from the Users table, or the full CREATE TABLE definition of every table in the database from sqlite_master, both in the same ordinary-looking JSON search response.",
+  "expected_exploit_indicator": "An unauthenticated GET to the public product search endpoint, with a UNION SELECT payload in its q parameter, returns every row of the Users table's email/password columns (or every table definition from sqlite_master) inside the normal search-results JSON",
+  "expected_blocked_signal": "The same payload is rejected before it ever reaches the database, with the search still functioning normally for ordinary search terms",
+  "legitimate_check": "A normal product search (e.g. for \"juice\") still returns matching products correctly."
+}
