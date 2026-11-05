@@ -16,4 +16,14 @@ An early manual test sent a chatbot message with no `action` field in the body. 
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-05. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. A real, working 10% coupon (`pes[Chz3Tq`) was received after 5 repeated requests, verified valid by applying it to a basket (`{"discount":10}`).
+- Post-fix (through a proxy that replaces the coupon-issuing response with a safe refusal): `REMEDIATED`. No real coupon was received across 20 attempts; the bot never produced the function-triggered response to the client.
+- Legitimate check: an unrelated chatbot question ("how much is apple juice") still got a sensible response in both conditions.
+
+## Checked the scoreboard
+
+`bullyChatbotChallenge` ("Bully Chatbot") flipped solved.
+
+Raw results in `results/pt37-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).
