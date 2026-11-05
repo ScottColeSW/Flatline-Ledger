@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt32-001",
+  "mitre_technique": null,
+  "target": "http://localhost:3033",
+  "status": "REMEDIATED",
+  "apply_status": 403,
+  "discount_applied": false,
+  "checkout_status": null,
+  "summary": "The forged coupon was rejected (HTTP 403) before the backend's own decode step ever saw it.",
+  "legitimate_issued_coupon_ok": true
+}

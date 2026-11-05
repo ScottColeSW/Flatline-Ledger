@@ -80,6 +80,7 @@
 </header>
 
 <div class="controls">
+  <button id="btnOpenShop" style="border-color: var(--white-hat); color: var(--white-hat);">⧉ OPEN JUICE SHOP</button>
   <button id="btnReplay">REPLAY</button>
   <button id="btnLive" class="primary">RUN LIVE</button>
   <button id="btnNext">NEXT →</button>
@@ -154,7 +155,7 @@ function render() {
 
   document.getElementById("main").innerHTML = `
     <div class="episode-title">Episode ${ep.number}: ${escapeHtml(ep.title)}</div>
-    <div class="episode-meta">items/${ep.item} · ${ep.container === "main" ? "main container" : ep.container === "unsafe" ? "isolated -unsafe container" : "config pairing (safe vs unsafe.yml)"}${live ? " · showing a LIVE run from this session" : " · showing the most recently saved run"}</div>
+    <div class="episode-meta">items/${ep.item} · ${ep.container === "main" ? "main container" : ep.container === "unsafe" ? "isolated -unsafe container" : "config pairing (safe vs unsafe.yml)"}${live ? " · showing a LIVE run from this session" : " · showing the most recently saved run"}${ep.no_scoreboard_popup ? " · <b style=\"color:#c8a028\">no \"solved\" popup will ever appear for this one (either not in Juice Shop's own catalog, or already solved by its own seed data on boot)</b>" : " · open Juice Shop and watch for the real \"solved\" popup when this runs live (needs a container that hasn't already solved it)"}</div>
     <div class="panes">
       <div class="pane black">
         <h2>Black Hat</h2>
@@ -208,6 +209,21 @@ document.getElementById("btnLive").onclick = async () => {
 document.getElementById("btnNext").onclick = () => {
   CURRENT = (CURRENT + 1) % EPISODES.length;
   render();
+};
+
+// Juice Shop sends X-Frame-Options: SAMEORIGIN, so it can't be embedded in
+// an iframe from this player's own origin. A real second window works
+// instead, no framing restriction, and it's the real app, so Juice Shop's
+// own "challenge solved" toast (broadcast globally over Socket.IO to every
+// connected browser, not scoped to whichever account triggered it) appears
+// there live the instant a RUN LIVE click actually solves that episode's
+// challenge in the catalog.
+let shopWindow = null;
+document.getElementById("btnOpenShop").onclick = () => {
+  const ep = EPISODES[CURRENT];
+  const base = ep && ep.container !== "main" ? "http://localhost:3012" : "http://localhost:3001";
+  shopWindow = window.open(`${base}/#/`, "flatline_juice_shop");
+  if (shopWindow) shopWindow.focus();
 };
 
 load();

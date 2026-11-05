@@ -1,0 +1,12 @@
+{
+  "vulnerability_id": "pt38-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3039",
+  "status": "REMEDIATED",
+  "creds_status": 400,
+  "victim_leaked": false,
+  "schema_status": 400,
+  "schema_leaked": false,
+  "summary": "Both UNION SELECT payloads were rejected (creds=400, schema=400) before reaching the database.",
+  "legitimate_search_ok": true
+}

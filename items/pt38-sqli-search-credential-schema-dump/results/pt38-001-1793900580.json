@@ -1,0 +1,12 @@
+{
+  "vulnerability_id": "pt38-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "creds_status": 200,
+  "victim_leaked": true,
+  "schema_status": 200,
+  "schema_leaked": true,
+  "summary": "A single unauthenticated search request dumped a real account's email+password hash via UNION SELECT, and a second dumped the full Users table schema definition.",
+  "legitimate_search_ok": true
+}

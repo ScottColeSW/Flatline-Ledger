@@ -1,0 +1,9 @@
+{
+  "vulnerability_id": "pt41-001",
+  "mitre_technique": "T1059.007",
+  "target": "http://localhost:3012",
+  "status": "VULNERABLE",
+  "node_version_leaked": true,
+  "summary": "The real Node.js version (v20.19.0) was eval'd and rendered on the profile page, confirming arbitrary server-side code execution.",
+  "legitimate_normal_username_displays_ok": true
+}

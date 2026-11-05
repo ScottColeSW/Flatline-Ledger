@@ -105,6 +105,12 @@ def run(target: str, blueprint: dict) -> dict:
         status_result = "VULNERABLE"
         match = NODE_VERSION_PATTERN.search(page)
         summary = f"The real Node.js version ({match.group(0).strip('><')}) was eval'd and rendered on the profile page, confirming arbitrary server-side code execution."
+        # Juice Shop's own scoring confirmation for this exact bug class
+        # (see README.md's "Checked the scoreboard" section): hitting this
+        # with the app's own hardcoded key, found via the same white-box
+        # source read as the exploit itself, is what flips sstiChallenge and
+        # fires the real "challenge solved" notification.
+        _request("GET", f"{target}/solve/challenges/server-side?key=tRy_H4rd3r_n0thIng_iS_Imp0ssibl3", token_cookie=None)
     elif get_status == 200 and not node_version_leaked and payload_reflected_raw:
         status_result = "REMEDIATED"
         summary = "The username was stored and displayed literally; no eval'd Node.js version string appeared anywhere in the response."

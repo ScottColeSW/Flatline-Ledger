@@ -46,6 +46,7 @@ SCRIPT = [
         "white": "White Hat becomes the real issuing authority instead: an HMAC-signed coupon only it can produce, verified before anything is translated and forwarded.",
         "container": "main",
         "proxy_port": 3033,
+        "no_scoreboard_popup": True,  # forgedCouponChallenge is already solved by Juice Shop's own seed data on every fresh boot, before any exploit runs
     },
     {
         "number": 2,
@@ -76,6 +77,7 @@ SCRIPT = [
         "white": "White Hat counts how many of these one caller sends and cuts them off after the first, before the server ever starts parsing a second.",
         "container": "unsafe",
         "proxy_port": 3028,
+        "no_scoreboard_popup": True,  # yamlBombChallenge is already solved by Juice Shop's own seed data on every fresh boot, before any exploit runs
     },
     {
         "number": 5,
@@ -86,6 +88,7 @@ SCRIPT = [
         "white": "White Hat checks the balance itself, in front of the real checkout, and answers politely instead of letting the request reach the code that crashes the whole server.",
         "container": "unsafe",
         "proxy_port": 3032,
+        "no_scoreboard_popup": True,  # not in Juice Shop's own challenge catalog at all, see this item's README
     },
     {
         "number": 6,
