@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt37-001",
+  "mitre_technique": null,
+  "mitre_technique_note": "Social-engineering a chatbot into handing out a real coupon is not attacker tradecraft against an enterprise network; ATT&CK has no clean mapping, same honest gap pt32 documents for the cryptographic side of the same coupon scheme.",
+  "owasp_category": "A04:2021 - Insecure Design",
+  "cwe": "CWE-840",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/chatbot/respond",
+  "description": "lib/botUtils.ts's couponCode() function unconditionally returns a real, valid discount coupon (security.generateCoupon(10), the same unkeyed scheme pt32 forges directly) with no authorization check, no rate limit, no per-user issuance tracking of any kind. It is reachable as one of several canned answers attached to the bot's 'queries.couponCode' intent in data/static/botDefaultTrainingData.json; the bot's own answer-rotation logic cycles through several refusal lines before eventually landing on the one that calls this function. Any authenticated account that simply repeats a coupon-related question a handful of times receives a working coupon, confirmed live in 2 attempts.",
+  "expected_exploit_indicator": "A short, bounded number of repeated coupon-related chatbot messages from one account results in a chatbot response containing a real, working coupon code",
+  "expected_blocked_signal": "A caller who has already received a chatbot-issued coupon is refused further coupon-intent responses, regardless of how the message is phrased",
+  "legitimate_check": "A normal chatbot conversation about something other than coupons still gets a sensible reply."
+}
