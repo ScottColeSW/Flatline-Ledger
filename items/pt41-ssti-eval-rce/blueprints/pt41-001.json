@@ -1,0 +1,20 @@
+{
+  "vulnerability_id": "pt41-001",
+  "mitre_technique": "T1059.007",
+  "owasp_category": "A03:2021 - Injection",
+  "cwe": "CWE-95",
+  "safe_target": {
+    "host": "http://localhost:3001",
+    "config": "default (Docker's own disabledEnv guard active)"
+  },
+  "unsafe_target": {
+    "host": "http://localhost:3012",
+    "config": "NODE_ENV=unsafe, the same config file pt10 and pt40 already established (config/unsafe.yml)"
+  },
+  "method": "GET",
+  "endpoint": "/profile",
+  "description": "routes/userProfile.ts checks whether a user's stored username matches /#{(.*)}/, and if so, passes the captured text straight to a raw eval(code) call, not a sandboxed vm context, the same scope as the surrounding server code, with full access to Node's globals including process and require. This is gated behind utils.isChallengeEnabled(challenges.usernameXssChallenge), which carries disabledEnv: [Docker, Heroku, Gitpod] in the catalog. getChallengeEnablementStatus's own logic short-circuits to fully enabled whenever config.get('challenges.safetyMode') === 'disabled', which is exactly what Juice Shop's own unsafe.yml config sets, the same config pt10 and pt40 already use to reopen their own findings. A username set to '#{global.process.version}' causes the real running Node.js version to be eval'd and rendered on the account's own profile page under the unsafe config; the default config never executes it at all.",
+  "expected_exploit_indicator": "A username containing #{global.process.version} results in the real Node.js version string (not the literal template text) appearing in the rendered profile page",
+  "expected_blocked_signal": "The literal, unevaluated username text is what appears on the profile page; no Node.js version string is present anywhere in the response",
+  "legitimate_check": "A normal username (no #{...} pattern) still displays correctly as itself on the profile page."
+}
