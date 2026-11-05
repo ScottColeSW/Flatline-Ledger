@@ -1,0 +1,20 @@
+{
+  "vulnerability_id": "pt40-001",
+  "mitre_technique": "T1190",
+  "owasp_category": "A03:2021 - Injection",
+  "cwe": "CWE-943",
+  "safe_target": {
+    "host": "http://localhost:3001",
+    "config": "default (Docker's own disabledEnv guard active)"
+  },
+  "unsafe_target": {
+    "host": "http://localhost:3012",
+    "config": "NODE_ENV=unsafe, the same config file pt10 already established (config/unsafe.yml)"
+  },
+  "method": "GET",
+  "endpoint": "/rest/track-order/{id}",
+  "description": "routes/trackOrder.ts builds a MongoDB $where query by string concatenation of the order-tracking id: db.ordersCollection.find({ $where: `this.orderId === '${id}'` }). Whether id is sanitized depends entirely on utils.isChallengeEnabled(challenges.reflectedXssChallenge), a DIFFERENT challenge's enablement flag, not noSqlOrdersChallenge's own. noSqlOrdersChallenge itself carries disabledEnv: [Docker, Heroku], which looks at first glance like it rules this out in a Docker deployment, but challengeUtils.solve()/solveIf() never check a challenge's own disabledEnv before marking it solved, they only gate whichever OTHER challenge's isChallengeEnabled() call happens to control the vulnerable code path. Verified live, not just from source: against this repo's own flatline-juice-shop-unsafe container (the same 'unsafe' NODE_ENV config pt10 already established unlocks reflectedXssChallenge's raw, untruncated id path), a single unauthenticated GET to the public order-tracking endpoint with a boolean-true $where payload returned every order in the entire database, across every account, not just the caller's own.",
+  "expected_exploit_indicator": "An unauthenticated GET to /rest/track-order/{payload} with a boolean-true MongoDB $where injection returns multiple orders belonging to different, unrelated accounts, confirmed by two independently placed test orders both appearing in one response",
+  "expected_blocked_signal": "The same payload returns at most the single synthetic placeholder result the endpoint falls back to when nothing matches, never another account's real order",
+  "legitimate_check": "Tracking a real, specific order by its exact order id still returns only that one order."
+}
