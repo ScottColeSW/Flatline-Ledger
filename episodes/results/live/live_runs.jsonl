@@ -1,0 +1,5 @@
+{"at": "2026-11-05T09:00:00", "number": 1, "title": "The Forged Coupon", "vulnerable_status": "ERROR", "remediated_status": "ERROR"}
+{"at": "2026-11-05T09:00:49", "number": 1, "title": "The Forged Coupon", "vulnerable_status": "ERROR", "remediated_status": "ERROR"}
+{"at": "2026-11-05T09:02:05", "number": 1, "title": "The Forged Coupon", "vulnerable_status": "VULNERABLE", "remediated_status": "REMEDIATED"}
+{"at": "2026-11-05T09:03:00", "number": 5, "title": "The Checkout That Took Everyone Down", "vulnerable_status": "VULNERABLE", "remediated_status": "REMEDIATED"}
+{"at": "2026-11-05T09:04:08", "number": 5, "title": "The Checkout That Took Everyone Down", "vulnerable_status": "VULNERABLE", "remediated_status": "REMEDIATED"}

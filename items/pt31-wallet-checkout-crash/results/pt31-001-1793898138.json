@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt31-001",
+  "mitre_technique": "T1499.004",
+  "target": "http://localhost:3012",
+  "status": "VULNERABLE",
+  "add_status": 200,
+  "checkout_status": 500,
+  "server_still_reachable": false,
+  "summary": "The insufficient-funds checkout returned HTTP 500 and the server became unreachable immediately after, a full-process crash from one ordinary checkout failure.",
+  "legitimate_funded_checkout_ok": false
+}

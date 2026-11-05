@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt31-001",
+  "mitre_technique": "T1499.004",
+  "target": "http://localhost:3032",
+  "status": "REMEDIATED",
+  "add_status": 200,
+  "checkout_status": 402,
+  "server_still_reachable": true,
+  "summary": "The checkout was rejected cleanly (HTTP 402) before reaching the crash-prone backend path; the server stayed reachable.",
+  "legitimate_funded_checkout_ok": true
+}

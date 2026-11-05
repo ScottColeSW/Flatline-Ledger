@@ -35,6 +35,10 @@ python -m pytest -q
 
 Lab targets are brought up with Docker and are not part of this repo; each item's `README.md` names the exact image and pinned tag it was run against (`pt01` uses `bkimminich/juice-shop:v17.3.0`).
 
+## Watch it: Black Hat vs White Hat
+
+A visual, side-by-side player for a pilot batch of six items, in the same spirit as [Project Aegis Vector](https://github.com/ScottColeSW/Project-Aegis-Vector)'s own episode player. REPLAY shows a real saved run; RUN LIVE actually re-runs that item's real exploit and real fix against the real container, right now, including the one episode that genuinely crashes and auto-restarts `flatline-juice-shop-unsafe`. See [episodes/README.md](episodes/README.md).
+
 ## Where this fits next to the other repos
 
 - [Agent Defense Theater](https://github.com/ScottColeSW/Agent-Defense-Theater): the same predict/attack/defend/score/record discipline, aimed at agent tool-use and identity risk instead of classic web vulnerabilities.
