@@ -1,0 +1,16 @@
+{
+  "vulnerability_id": "pt39-001",
+  "mitre_technique": null,
+  "mitre_technique_note": "Buying a discontinued or safety-recalled product the storefront deliberately stopped selling is a business-logic/access-control flaw, not attacker tradecraft against an enterprise network; ATT&CK has no clean mapping, same honest gap pt15, pt30, and pt37 document for other business-logic findings in this app.",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-862",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/api/BasketItems",
+  "description": "routes/basketItems.ts's quantityCheck (reused from pt30) only verifies there is enough stock for the requested quantity; it never checks whether the product itself is soft-deleted (deletedAt set), which is exactly how this app hides discontinued or recalled products from its own catalog and search (every normal product query filters AND deletedAt IS NULL). Any product id, including ones permanently removed from the storefront, can still be added to a basket and purchased directly if the id is known. Confirmed with two separate seeded products: the 2014 Christmas Special promotional item (id 10, deletedAt set to 2014-12-27), and a product explicitly pulled 'because of lack of safety standards... we plan to remove it from stock' (id 11), both added to a basket and, for the Christmas Special, carried through a complete checkout.",
+  "expected_exploit_indicator": "A product id known to be soft-deleted (not present in any normal product listing or search result) is accepted by POST /api/BasketItems and can be checked out normally",
+  "expected_blocked_signal": "Adding a soft-deleted product id to a basket is rejected before the add succeeds",
+  "legitimate_check": "Adding a normal, currently-listed product to a basket still succeeds."
+}
