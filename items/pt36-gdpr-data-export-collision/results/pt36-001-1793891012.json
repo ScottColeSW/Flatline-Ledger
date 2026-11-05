@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt36-001",
+  "mitre_technique": "T1213",
+  "target": "http://localhost:3037",
+  "status": "REMEDIATED",
+  "export_http_status": 200,
+  "attacker_sees_victim_order": false,
+  "summary": "The attacker's export did not include the victim's order; the lookup no longer collides across distinct accounts.",
+  "legitimate_own_order_visible": true
+}

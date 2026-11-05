@@ -82,6 +82,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt33](items/pt33-open-redirect-allowlist-bypass/) Open Redirect Allowlist Bypass (Juice Shop, CWE-601, T1204.001, A01:2021) | Found white-box from the challenge catalog ("Allowlist Bypass"). The redirect allowlist checks `url.includes(allowedUrl)` instead of a prefix/origin match; a URL on an attacker-controlled domain that merely contains an allowlisted string passes and gets a real 302 | No control: `VULNERABLE` (`302` to the attacker's own domain). A prefix-check proxy: `REMEDIATED` (`406`), straight allowlisted redirects unaffected |
 | [pt34](items/pt34-poison-null-byte-file-read/) Poison Null Byte File Read, and the Easter Egg (Juice Shop, CWE-158, T1005, A05:2021) | Found white-box ("Poison Null Byte" + "Easter Egg"). `/ftp/{file}` checks the extension before truncating at a null byte, so `eastere.gg%2500.md` passes as `.md` but serves the hidden file before the null byte. Confirmed general with a second, unrelated file (`package.json.bak`). This repo's one deliberately-for-fun item | No control: `VULNERABLE` (both files served). A truncate-first proxy: `REMEDIATED` (`403` on both), real `.md` downloads unaffected |
 | [pt35](items/pt35-2fa-totp-bruteforce/) 2FA TOTP Verify Has No Brute-Force Protection (Juice Shop, CWE-307, T1110.001, A07:2021) | Sixth item not in Juice Shop's own catalog (the real 2FA challenge only scores extracting one named NPC's secret through an unrelated bug, not this). `POST /rest/2fa/verify` has no rate limiting at all; 15 random wrong codes all looked identical and the real code worked instantly after | No control: `VULNERABLE` (15/15 answered, none blocked). A lockout proxy: `REMEDIATED` (10/15 blocked after the 5th failure), fresh-session first-attempt 2FA unaffected |
+| [pt36](items/pt36-gdpr-data-export-collision/) GDPR Data Export Order Leak via Email Collision (Juice Shop, CWE-639, T1213, A01:2021) | Found white-box ("GDPR Data Theft"). Order lookup keys on a vowel-redacted email, not a real id; two accounts whose local-parts redact identically collide completely. An account with zero orders received a victim's real order in its own export | No control: `VULNERABLE` (victim's order leaked). An ownership-tracking proxy: `REMEDIATED` (leak excluded), each account's own orders still visible |
 
 ## Items
 
@@ -122,6 +123,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt33-open-redirect-allowlist-bypass](items/pt33-open-redirect-allowlist-bypass/) | Unvalidated redirect / broken access control | Run live, 2026-11-04 |
 | [pt34-poison-null-byte-file-read](items/pt34-poison-null-byte-file-read/) | Improper input validation / arbitrary file read | Run live, 2026-11-04 |
 | [pt35-2fa-totp-bruteforce](items/pt35-2fa-totp-bruteforce/) | Insufficient logging and monitoring / brute force (2FA) | Run live, 2026-11-04 |
+| [pt36-gdpr-data-export-collision](items/pt36-gdpr-data-export-collision/) | Broken access control / sensitive data exposure | Run live, 2026-11-04 |
 
 ## Keeping this safe
 

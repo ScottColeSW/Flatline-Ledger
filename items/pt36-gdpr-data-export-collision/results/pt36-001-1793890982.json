@@ -1,0 +1,10 @@
+{
+  "vulnerability_id": "pt36-001",
+  "mitre_technique": "T1213",
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "export_http_status": 200,
+  "attacker_sees_victim_order": true,
+  "summary": "An account with no orders of its own received another, unrelated account's real order in its own GDPR data export, via a chosen colliding email.",
+  "legitimate_own_order_visible": true
+}

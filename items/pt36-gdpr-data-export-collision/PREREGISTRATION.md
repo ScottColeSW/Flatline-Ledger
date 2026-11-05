@@ -19,4 +19,14 @@ db.ordersCollection.find({ email: updatedEmail })
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-04. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. An attacker account with no orders of its own, email chosen to redact identically to a victim's, received the victim's real order in its own export.
+- Post-fix (through a proxy tracking real order ownership by caller email as orders are placed through it): `REMEDIATED`. The same export no longer included the victim's order.
+- Legitimate check: the victim's own export still included their own real order in both conditions.
+
+## Checked the scoreboard
+
+`dataExportChallenge` ("GDPR Data Theft") flipped solved.
+
+Raw results in `results/pt36-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).
