@@ -1,0 +1,15 @@
+{
+  "vulnerability_id": "pt36-001",
+  "mitre_technique": "T1213",
+  "owasp_category": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-639",
+  "target": {
+    "host": "http://localhost:3001"
+  },
+  "method": "POST",
+  "endpoint": "/rest/user/data-export",
+  "description": "routes/dataExport.ts looks up a user's order history with db.ordersCollection.find({ email: updatedEmail }), where updatedEmail = email.replace(/[aeiou]/gi, '*'). Orders are stored under this same vowel-redacted form (routes/order.ts: email.replace(/[aeiou]/gi, '*')), apparently intended as light pseudonymization in the export, but it is used as the actual lookup key, not just display masking. Two different real accounts whose email local-parts redact to the identical pattern, for example any two email addresses made up only of vowels plus the same non-letter characters, collide completely: every order either account ever placed is returned to whichever one exports their data. No injection, no IDOR parameter tampering, just choosing a registration email that happens to redact to the same string as an existing one.",
+  "expected_exploit_indicator": "An account that has placed no orders of its own requests its own GDPR data export and receives another, unrelated account's real order in the response",
+  "expected_blocked_signal": "The export's order lookup is keyed on something that cannot collide across distinct accounts (the caller's own numeric user id, not a lossy redacted email), so only the caller's own orders are ever returned",
+  "legitimate_check": "An account's data export still includes that account's own real orders."
+}
