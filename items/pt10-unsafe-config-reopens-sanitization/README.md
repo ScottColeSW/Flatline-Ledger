@@ -61,5 +61,6 @@ Raw per-run output: `results/pt10-001-*.json`. `python ledger.py verify` from th
 ## What this does not show
 
 - Only one injection payload was tried; the actual extent of what's reachable through this `$where` clause (the code comment's own words, "to avoid unintentional RCE") wasn't explored further, this item stopped at confirming cross-account data exfiltration, deliberately not pushing toward remote code execution.
+- The cross-account leak shown in the result table above already satisfies Juice Shop's own `noSqlOrdersChallenge` ("NoSQL Exfiltration") solve condition, but that wasn't noticed or credited at the time. [pt40](../pt40-nosql-order-exfiltration/) formalizes it properly with concrete two-account proof and the correct scoreboard confirmation, including the discovery that `noSqlOrdersChallenge`'s own `disabledEnv: [Docker, Heroku]` flag doesn't actually govern this code path.
 - `config/ctf.yml` sets the same `safetyMode: disabled` and wasn't separately tested; it's reasonable to assume it behaves identically, but that's an assumption, not a measurement.
 - Same caveats as the earlier items: one vendor image, one run, no ticket-loop integration yet.

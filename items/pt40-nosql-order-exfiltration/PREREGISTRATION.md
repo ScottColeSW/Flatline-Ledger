@@ -16,4 +16,14 @@
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-05. Prediction held exactly.**
+
+- Safe config (`--mode safe`, port 3001): `REMEDIATED`. The injection payload returned exactly 1 row (the synthetic placeholder); neither test order was leaked.
+- Unsafe config (`--mode unsafe`, port 3012): `VULNERABLE`. The same payload returned 5 rows, including both independently-placed test orders from two unrelated accounts.
+- Legitimate check: tracking a real order by its own exact id returned exactly that order in both configs.
+
+## Checked the scoreboard
+
+`noSqlOrdersChallenge` ("NoSQL Exfiltration") flipped solved on the unsafe container.
+
+Raw results in `results/pt40-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).

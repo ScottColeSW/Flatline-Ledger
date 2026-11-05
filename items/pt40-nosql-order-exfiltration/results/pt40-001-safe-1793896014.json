@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt40-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3001",
+  "status": "REMEDIATED",
+  "injection_http_status": 200,
+  "returned_rows": 1,
+  "both_orders_leaked": false,
+  "summary": "The injection payload returned at most the single synthetic placeholder result; neither test order was leaked.",
+  "legitimate_own_order_trackable": true
+}

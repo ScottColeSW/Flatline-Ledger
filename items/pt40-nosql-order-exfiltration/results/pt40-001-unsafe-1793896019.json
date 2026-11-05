@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt40-001",
+  "mitre_technique": "T1190",
+  "target": "http://localhost:3012",
+  "status": "VULNERABLE",
+  "injection_http_status": 200,
+  "returned_rows": 5,
+  "both_orders_leaked": true,
+  "summary": "An unauthenticated boolean-true $where injection returned both independently-placed orders (5 total rows), across two unrelated accounts.",
+  "legitimate_own_order_trackable": true
+}
