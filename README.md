@@ -85,6 +85,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt36](items/pt36-gdpr-data-export-collision/) GDPR Data Export Order Leak via Email Collision (Juice Shop, CWE-639, T1213, A01:2021) | Found white-box ("GDPR Data Theft"). Order lookup keys on a vowel-redacted email, not a real id; two accounts whose local-parts redact identically collide completely. An account with zero orders received a victim's real order in its own export | No control: `VULNERABLE` (victim's order leaked). An ownership-tracking proxy: `REMEDIATED` (leak excluded), each account's own orders still visible |
 | [pt37](items/pt37-chatbot-coupon-leak/) Chatbot Hands Out a Real Coupon If You Keep Asking (Juice Shop, CWE-840, A04:2021) | Found white-box ("Bully Chatbot", hint: "Just keep asking"). The bot's coupon-intent handler unconditionally returns a real, working coupon with no gate at all, reached by cycling through canned refusals. A fresh account got one in 5 requests, verified valid at checkout | No control: `VULNERABLE` (real coupon received, 5 attempts). A response-filtering proxy: `REMEDIATED` (no coupon in 20 attempts), unrelated chat unaffected |
 | [pt38](items/pt38-sqli-search-credential-schema-dump/) SQL Injection via Product Search, Credential and Schema Dump (Juice Shop, CWE-89, T1190, A03:2021) | Found white-box ("Database Schema" + "User Credentials"), two catalog challenges from one unparameterized query. An unauthenticated UNION SELECT dumps every account's email+password hash, or the full table schema, from the public search endpoint | No control: `VULNERABLE` (credentials and schema both dumped). A keyword-filter proxy: `REMEDIATED` (`400` on both), normal search unaffected |
+| [pt39](items/pt39-discontinued-product-purchase/) Discontinued and Safety-Recalled Products Still Purchasable (Juice Shop, CWE-862, A01:2021) | Found white-box ("Christmas Special"). Basket-add never checks whether a product is soft-deleted, only stock. Used pt38's SQLi to find the hidden product id, which also surfaced a second, safety-recalled hidden product, both purchasable | No control: `VULNERABLE` (both added, one checks out). An oracle-check proxy: `REMEDIATED` (`400` on both), normal product adds unaffected |
 
 ## Items
 
@@ -128,6 +129,7 @@ Details on specific overlaps (same infrastructure attacked from two angles, shar
 | [pt36-gdpr-data-export-collision](items/pt36-gdpr-data-export-collision/) | Broken access control / sensitive data exposure | Run live, 2026-11-04 |
 | [pt37-chatbot-coupon-leak](items/pt37-chatbot-coupon-leak/) | Insecure design / business logic (chatbot) | Run live, 2026-11-05 |
 | [pt38-sqli-search-credential-schema-dump](items/pt38-sqli-search-credential-schema-dump/) | SQL injection (UNION-based) | Run live, 2026-11-05 |
+| [pt39-discontinued-product-purchase](items/pt39-discontinued-product-purchase/) | Broken access control / missing authorization | Run live, 2026-11-05 |
 
 ## Keeping this safe
 

@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt39-001",
+  "mitre_technique": null,
+  "target": "http://localhost:3040",
+  "status": "REMEDIATED",
+  "add_status": 400,
+  "checkout_status": null,
+  "second_add_status": 400,
+  "summary": "Adding either hidden product to a basket was rejected (HTTP 400) before it could reach checkout.",
+  "legitimate_normal_product_add_ok": true
+}

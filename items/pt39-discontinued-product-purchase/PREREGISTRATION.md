@@ -16,4 +16,14 @@ The Christmas Special's product id was found using the same UNION SQL injection 
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-05. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. The Christmas Special (product id 10) was added to a basket and carried through a full checkout; the safety-recalled product (id 11) was also added successfully.
+- Post-fix (through a proxy reusing `GET /api/Products/:id` as an authorization oracle before any basket-item add): `REMEDIATED`. Both adds were rejected `400`.
+- Legitimate check: adding a normal, currently-listed product (Apple Juice, id 1) succeeded in both conditions.
+
+## Checked the scoreboard
+
+`christmasSpecialChallenge` flipped solved.
+
+Raw results in `results/pt39-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).

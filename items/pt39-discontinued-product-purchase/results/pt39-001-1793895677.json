@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt39-001",
+  "mitre_technique": null,
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "add_status": 200,
+  "checkout_status": 200,
+  "second_add_status": 200,
+  "summary": "Both a discontinued promotional product and a separate, safety-recalled product were added to a basket and purchased despite being hidden from every normal listing.",
+  "legitimate_normal_product_add_ok": true
+}
