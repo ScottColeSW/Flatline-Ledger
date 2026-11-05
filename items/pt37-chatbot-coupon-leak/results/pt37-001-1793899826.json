@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt37-001",
+  "mitre_technique": null,
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "attempts_taken": 6,
+  "coupon_received": true,
+  "coupon_verified_valid": true,
+  "summary": "The chatbot handed out a real, working 10% coupon (pes[Chz3Tq) after 6 repeated requests, verified valid by applying it to a basket.",
+  "legitimate_unrelated_query_ok": true
+}

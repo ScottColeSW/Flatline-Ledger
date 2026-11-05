@@ -1,0 +1,11 @@
+{
+  "vulnerability_id": "pt32-001",
+  "mitre_technique": null,
+  "target": "http://localhost:3001",
+  "status": "VULNERABLE",
+  "apply_status": 200,
+  "discount_applied": true,
+  "checkout_status": 200,
+  "summary": "A coupon forged offline (no server interaction) for 90% off was accepted and applied to the basket.",
+  "legitimate_issued_coupon_ok": true
+}

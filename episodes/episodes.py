@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import socket
 import subprocess
 import sys
 import time
@@ -180,12 +181,32 @@ def _wait_for_health(url: str, attempts: int = 10, delay: float = 1.5) -> bool:
     return False
 
 
+def _port_open(port: int, host: str = "127.0.0.1") -> bool:
+    try:
+        with socket.create_connection((host, port), timeout=1.0):
+            return True
+    except OSError:
+        return False
+
+
+def _wait_for_port(port: int, attempts: int = 10, delay: float = 0.75) -> bool:
+    """Waits for something to be listening on a port, without assuming it
+    answers GET / with 200: some of this repo's proxy.py scripts only ever
+    implement do_POST (their exploit is POST-only), and would otherwise
+    answer a GET health check with a 501 forever."""
+    for _ in range(attempts):
+        if _port_open(port):
+            return True
+        time.sleep(delay)
+    return False
+
+
 def _restart_unsafe_container() -> bool:
     subprocess.run(["docker", "start", "flatline-juice-shop-unsafe"], capture_output=True, timeout=30)
     return _wait_for_health(UNSAFE_HEALTH_URL)
 
 
-def _run_scenario(item: str, extra_args: list[str], timeout: float = 45.0) -> dict:
+def _run_scenario(item: str, extra_args: list[str], timeout: float = 90.0) -> dict:
     """Runs an item's real scenario.py and parses its one pretty-printed JSON
     result from stdout (the whole of stdout is that one json.dumps(..., indent=2)
     call; nothing else is printed before it)."""
@@ -247,7 +268,7 @@ def run_live(number: int) -> dict:
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
     )
     try:
-        if not _wait_for_health(f"http://localhost:{proxy_port}/", attempts=8, delay=0.75):
+        if not _wait_for_port(proxy_port, attempts=8, delay=0.75):
             remediated = {"status": "ERROR", "summary": "proxy did not come up in time"}
         else:
             remediated = _run_scenario(item, ["--target", f"http://localhost:{proxy_port}"])
