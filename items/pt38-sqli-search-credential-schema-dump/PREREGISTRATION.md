@@ -16,4 +16,14 @@ The Products table's column count was found with an incrementing `UNION SELECT N
 
 ## Result
 
-(Filled in after the live run.)
+**Status: run live, 2026-11-05. Prediction held exactly.**
+
+- Pre-fix: `VULNERABLE`. A single unauthenticated search request with a UNION SELECT payload returned a self-created test account's own email and password hash in the response; a second, differently-shaped payload returned the full `CREATE TABLE` definition for `Users` from `sqlite_master`.
+- Post-fix (through a proxy rejecting any search query containing the `UNION SELECT` keyword pairing): `REMEDIATED`. Both payloads were rejected `400` before reaching the database.
+- Legitimate check: a normal search for "juice" returned matching products correctly in both conditions.
+
+## Checked the scoreboard
+
+Both `unionSqlInjectionChallenge` ("User Credentials") and `dbSchemaChallenge` ("Database Schema") flipped solved from the two live payloads above.
+
+Raw results in `results/pt38-001-*.json`; both runs are in the repo-root hash-chained log (`python ledger.py verify`).

