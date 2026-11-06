@@ -47,6 +47,10 @@ A visual, side-by-side player for a pilot batch of six items, in the same spirit
 
 Details on specific overlaps (same infrastructure attacked from two angles, shared MITRE mappings) are in [docs/OVERLAPS.md](docs/OVERLAPS.md).
 
+## External citations
+
+- [OWASP/Top10#973](https://github.com/OWASP/Top10/issues/973): proposes pt21 and pt31 as examples for A10:2025 Mishandling of Exceptional Conditions, a new category whose own mapped CWEs (CWE-209, CWE-248) match both findings directly. Status: posted.
+
 ## Results so far
 
 | Item | Finding | Result |
